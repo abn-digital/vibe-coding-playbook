@@ -1,0 +1,6 @@
+gcp_project_id             = "my-gcp-project"
+app_name                   = "my-product"
+health_check_url           = "https://app.example.com/api/health"
+gce_instance_id            = "1234567890123456789"
+create_slack_channel       = false
+slack_channel_display_name = "alerts-slack"

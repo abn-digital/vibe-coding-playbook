@@ -1,0 +1,5 @@
+gcp_project_id          = "my-gcp-project"
+app_name                = "my-poc"
+health_check_url        = "https://my-poc.web.app/api/health"
+create_slack_channel    = false
+slack_channel_display_name = "alerts-slack"

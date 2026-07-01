@@ -1,0 +1,16 @@
+{
+  "name": "vibe-coding-poc",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "typecheck": "pnpm -r run typecheck",
+    "lint": "pnpm -r run lint",
+    "test": "pnpm --filter backend run test",
+    "docker:up": "docker compose up",
+    "docker:smoke": "docker compose up --wait && curl -sf http://localhost:8081/api/health"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
