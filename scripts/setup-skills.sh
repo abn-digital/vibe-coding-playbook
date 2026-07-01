@@ -6,7 +6,7 @@ cd "$(dirname "$0")/.."
 npx skills@latest add DietrichGebert/ponytail -y
 npx skills@latest add shadcn/improve -y
 npx skills@latest add GoogleChrome/modern-web-guidance -y
-npx skills@latest add mattpocock/skills -y
+npx skills@latest add mattpocock/skills -y --skill grill-me grilling grill-with-docs
 
 # Junction .claude/skills -> .agents/skills (macOS/Linux)
 if [ ! -e .claude/skills ]; then
@@ -14,4 +14,4 @@ if [ ! -e .claude/skills ]; then
   ln -s ../.agents/skills .claude/skills
 fi
 
-echo "Skills installed. Run /setup-matt-pocock-skills once per repo."
+echo "Skills installed."

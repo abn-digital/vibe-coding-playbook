@@ -8,7 +8,7 @@
 npx skills@latest add DietrichGebert/ponytail
 npx skills@latest add shadcn/improve
 npx skills@latest add GoogleChrome/modern-web-guidance
-npx skills@latest add mattpocock/skills
+npx skills@latest add mattpocock/skills --skill grill-me grilling grill-with-docs
 ```
 
 Project skill: `.agents/skills/vibe-coding-playbook/` (symlinked to `.claude/skills/`).
@@ -24,7 +24,9 @@ Project skill: `.agents/skills/vibe-coding-playbook/` (symlinked to `.claude/ski
 
 | Skill | Role |
 |---|---|
-| [grill-with-docs](https://github.com/mattpocock/skills) | Align on design; write [MADR](../decisions/) for deviations |
+| [grilling](https://github.com/mattpocock/skills) | Interview primitive — one question at a time |
+| [grill-me](https://github.com/mattpocock/skills) | Stateless grill when there is no codebase yet |
+| [grill-with-docs](https://github.com/mattpocock/skills) | Grill with a codebase; write [MADR](../decisions/) for deviations |
 
 ## Sparingly
 

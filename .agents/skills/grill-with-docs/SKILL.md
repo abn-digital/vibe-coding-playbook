@@ -4,4 +4,4 @@ description: A relentless interview to sharpen a plan or design, which also crea
 disable-model-invocation: true
 ---
 
-Run a `/grilling` session, using the `/domain-modeling` skill.
+Run a `/grilling` session. Record hard-to-reverse decisions as [MADR](https://adr.github.io/madr/) in `docs/decisions/` and update `CONTEXT.md` when domain terms are resolved.

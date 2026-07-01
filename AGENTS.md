@@ -44,15 +44,15 @@ Or manually:
 npx skills@latest add DietrichGebert/ponytail -y
 npx skills@latest add shadcn/improve -y
 npx skills@latest add GoogleChrome/modern-web-guidance -y
-npx skills@latest add mattpocock/skills -y
+npx skills@latest add mattpocock/skills -y --skill grill-me grilling grill-with-docs
 ```
-
-Then run `/setup-matt-pocock-skills` once per repo (issue tracker, MADR path).
 
 | Skill | When |
 |---|---|
 | **ponytail** | Every session — default `full` intensity |
 | **modern-web-guidance** | Before any UI, layout, form, or frontend perf work |
+| **grilling** | Core interview primitive — one question at a time |
+| **grill-me** | Stateless grill when there is no codebase yet |
 | **grill-with-docs** | Before significant features; writes MADR to `docs/decisions/` |
 | **improve** | Sparingly — mid-POC audit, pre-graduation only |
 
