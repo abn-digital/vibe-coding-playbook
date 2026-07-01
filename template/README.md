@@ -6,20 +6,25 @@ Copy this directory to start a new POC:
 cp -r template/ ../my-poc && cd ../my-poc
 ```
 
-See [docs/vibe-coding/](../docs/vibe-coding/) in the playbook repo for the full guide.
-
 ## Quick start
 
 ```bash
-# Install dependencies (pnpm workspace — lockfile at repo root)
-pnpm install
+# 1. Authenticate to GCP (ADC)
+gcloud auth application-default login
+gcloud config set project hike-agentic-playground
 
-# Start emulators + frontend + backend
-docker compose up
+# 2. Configure local env
+cp compose.env.example compose.env
+cp .env.example .env
+# Edit .env → GCLOUD_ADC_DIR (ADC mount for Docker)
+# Edit compose.env → VITE_FIREBASE_* from Firebase console
+
+# 3. Install and run
+pnpm install
+docker compose up --build
 ```
 
 - Frontend: http://localhost:5173
-- Firebase Emulator UI: http://localhost:4000
 - API health: http://localhost:8081/api/health
 
 ## Layout
@@ -28,7 +33,8 @@ docker compose up
 frontend/          React + Vite + TypeScript + shadcn/ui
 backend/
   src/routes/      Handlers only
-  src/middleware/  Auth + App Check verification
+  src/middleware/  Auth verification (ADC)
   rules/           Firestore + Storage security rules
+compose.env        Local ADC path + Firebase web config
 terraform/         GCP provisioning (plan before apply)
 ```

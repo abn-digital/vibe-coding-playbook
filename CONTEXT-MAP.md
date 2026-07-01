@@ -16,7 +16,7 @@
 - **Project-specific decisions**: [MADR](https://adr.github.io/madr/) records in `docs/decisions/` when a choice deviates from playbook defaults.
 - **Scaffolded POC layout**: `frontend/` and `backend/` at repo root. Security boundary (rules, `firebase.json`, server middleware) lives inside `backend/`.
 - **Secrets**: [Varlock](https://varlock.dev) with `@varlock/google-secret-manager-plugin` — no manual `.env` manipulation; schema-driven config only.
-- **Local dev**: Docker Compose with three services — Firebase emulators, frontend (Vite), backend (Cloud Run equivalent). Single entry point: `docker compose up`.
+- **Local dev**: Docker Compose with **frontend + backend** against **hike-agentic-playground** GCP. ADC via `gcloud auth application-default login`. No Firebase emulators.
 - **Starter scaffold**: `template/` directory (copy to start a new POC). Documented and referenced from `docs/vibe-coding/`.
 - **POC verification**: typecheck, lint, unit tests (Firestore rules + server middleware), Docker health smoke. No Cypress E2E — E2E belongs to the product stage.
 - **POC CI**: PR = verify + Docker smoke (emulators only, no prod access). `main` = verify + Firebase Hosting preview. Production deploy = manual workflow dispatch or tag.

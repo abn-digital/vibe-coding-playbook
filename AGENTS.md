@@ -97,10 +97,13 @@ No Cypress E2E in POC.
 ### Local dev
 
 ```bash
-docker compose up   # emulators + frontend + backend
+gcloud auth application-default login
+gcloud config set project hike-agentic-playground
+cp compose.env.example compose.env   # fill in ADC path + Firebase web config
+docker compose up                    # frontend + backend → hike-agentic-playground GCP
 ```
 
-Never develop against production Firebase.
+Never use Firebase emulators for local development.
 
 ## Language
 

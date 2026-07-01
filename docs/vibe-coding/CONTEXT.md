@@ -16,9 +16,9 @@ _Avoid_: Always-on, warm pool
 Firestore Security Rules and Storage Rules are the only client-facing authorization layer in vibe-coding. No Cerbos, no server-side RBAC framework.
 _Avoid_: App-level auth checks only
 
-**Emulator-first**:
-Local development runs against the Firebase Emulator Suite via Docker Compose (emulators + frontend + backend) before any deploy to production Firebase resources.
-_Avoid_: Dev against prod, live debugging, host-only npm dev
+**GCP dev project**:
+Local development uses the shared **hike-agentic-playground** Firebase/GCP project. Docker mounts ADC credentials — no emulators.
+_Avoid_: Emulator-first, demo project, production Firebase for experiments
 
 **Anonymous user**:
 A Firebase Auth session with no email claim (`request.auth.token.email == null`). Rules that require email must explicitly exclude or upgrade anonymous users.

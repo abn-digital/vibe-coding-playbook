@@ -6,7 +6,7 @@ Dos etapas del ciclo de vida para construir aplicaciones web: POCs desechables r
 
 | Etapa | Empezá acá | Stack |
 |---|---|---|
-| **POC vibe-coding** | [docs/vibe-coding/](docs/vibe-coding/) + [template/](template/) | Firebase, Cloud Run, emuladores Docker |
+| **POC vibe-coding** | [docs/vibe-coding/](docs/vibe-coding/) + [template/](template/) | Firebase, Cloud Run, hike-agentic-playground GCP |
 | **Producto** | [docs/product/](docs/product/) | Supabase self-hosted, VM GCE, Cerbos |
 
 ## Inicio rápido (POC nuevo)

@@ -9,21 +9,20 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterAll, beforeAll, describe, it } from "vitest";
 
-const PROJECT_ID = "demo-vibe-coding";
-const [emulatorHost, emulatorPort] = (
-  process.env.FIRESTORE_EMULATOR_HOST ?? "127.0.0.1:8080"
-).split(":");
+const PROJECT_ID = "hike-agentic-playground";
+const hasEmulator = Boolean(process.env.FIRESTORE_EMULATOR_HOST);
 
-describe("firestore rules", () => {
+describe.skipIf(!hasEmulator)("firestore rules", () => {
   let testEnv: RulesTestEnvironment;
 
   beforeAll(async () => {
+    const [host, port] = process.env.FIRESTORE_EMULATOR_HOST!.split(":");
     testEnv = await initializeTestEnvironment({
       projectId: PROJECT_ID,
       firestore: {
         rules: readFileSync(resolve(import.meta.dirname, "firestore.rules"), "utf8"),
-        host: emulatorHost,
-        port: Number(emulatorPort),
+        host,
+        port: Number(port),
       },
     });
   });

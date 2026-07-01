@@ -1,6 +1,6 @@
 # Stack
 
-> Firebase POC stack with strict resource limits.
+> Firebase POC stack with strict resource limits. Local dev uses **hike-agentic-playground** GCP.
 
 Copy [template/](../../template/) before starting.
 
@@ -33,7 +33,10 @@ Use Cloud Run only when Firestore rules cannot express the logic (external APIs,
 | **Auth** | Google + Anonymous only |
 | **Storage** | User-scoped files, 5MB limit in rules |
 | **App Check** | Abuse protection before real users |
-| **Emulators** | Local dev via Docker (never prod) |
+
+## Local development
+
+Docker Compose runs **frontend + backend** against the **hike-agentic-playground** GCP project. Authenticate with ADC (`gcloud auth application-default login`). No Firebase emulators.
 
 ## Out of scope for POC
 

@@ -1,11 +1,22 @@
 # Local Development
 
-> One command: `docker compose up`.
+> One command: `docker compose up` — against **hike-agentic-playground** GCP (no emulators).
 
 ## Prerequisites
 
-- Docker Desktop
-- Node 22+ (for host-side `npm install` if needed)
+```bash
+gcloud auth application-default login
+gcloud config set project hike-agentic-playground
+```
+
+Copy Firebase web config into `compose.env` and ADC path into `.env`:
+
+```bash
+cp compose.env.example compose.env
+cp .env.example .env
+# .env → GCLOUD_ADC_DIR (Docker volume mount for ADC)
+# compose.env → VITE_FIREBASE_* from Firebase console
+```
 
 ## Setup
 
@@ -20,10 +31,7 @@ docker compose up --build
 | Service | URL |
 |---|---|
 | Frontend (Vite) | http://localhost:5173 |
-| Firebase Emulator UI | http://localhost:4000 |
 | API health | http://localhost:8081/api/health |
-| Auth emulator | localhost:9099 |
-| Firestore emulator | localhost:8080 |
 
 ## Layout
 
@@ -34,13 +42,14 @@ backend/
   src/middleware/
   rules/
 docker-compose.yml
+compose.env          # ADC path + Firebase web config (gitignored)
 ```
 
 ## Rules
 
-- **Emulator-first** — never develop against production Firebase.
-- Local Docker uses `json-file` logging (not `gcplogs`).
-- `VITE_USE_EMULATORS=true` in compose wires the frontend SDK to emulators.
+- **GCP dev project** — local Docker talks to real Firebase in `hike-agentic-playground` via ADC.
+- Backend mounts `${GCLOUD_ADC_DIR}` → `/root/.config/gcloud` for `applicationDefault()` credentials.
+- Never put secrets in `VITE_*` variables.
 
 ## Verification
 
@@ -48,5 +57,7 @@ docker-compose.yml
 pnpm run typecheck
 pnpm run lint
 pnpm run test
-curl -sf http://localhost:8081/api/health
+curl http://localhost:8081/api/health
 ```
+
+Firestore rules unit tests are skipped unless `FIRESTORE_EMULATOR_HOST` is set. Validate rules with `firebase deploy --only firestore:rules` against the dev project.

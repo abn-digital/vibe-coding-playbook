@@ -6,19 +6,20 @@ Two lifecycle stages for building web apps — fast disposable POCs, then produc
 
 | Stage | Start here | Stack |
 |---|---|---|
-| **Vibe-coding POC** | [docs/vibe-coding/](docs/vibe-coding/) + [template/](template/) | Firebase, Cloud Run, Docker emulators |
+| **Vibe-coding POC** | [docs/vibe-coding/](docs/vibe-coding/) + [template/](template/) | Firebase, Cloud Run, hike-agentic-playground GCP |
 | **Product** | [docs/product/](docs/product/) | Supabase self-hosted, GCE VM, Cerbos |
 
 ## Quick start (new POC)
 
 ```bash
 cp -r template/ ../my-poc && cd ../my-poc
+gcloud auth application-default login
+cp compose.env.example compose.env
 pnpm install
 docker compose up --build
 ```
 
 - Frontend: http://localhost:5173
-- Emulator UI: http://localhost:4000
 - Health: http://localhost:8081/api/health
 
 ## Agents

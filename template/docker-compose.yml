@@ -1,47 +1,21 @@
-# Local dev only — json-file logging. Production uses gcplogs (product) or Cloud Run native logging (POC).
+# Local dev — json-file logging. Connects to hike-agentic-playground GCP (no emulators).
+# Prerequisite: gcloud auth application-default login
 services:
-  firebase-emulators:
-    image: node:22-bookworm-slim
-    working_dir: /app
-    command: >
-      sh -c "npm install -g firebase-tools@14 &&
-             firebase emulators:start
-             --project demo-vibe-coding
-             --only auth,firestore,storage"
-    volumes:
-      - ./backend/firebase.json:/app/firebase.json:ro
-      - ./backend/rules:/app/rules:ro
-    ports:
-      - "4000:4000"
-      - "9099:9099"
-      - "8080:8080"
-      - "9199:9199"
-      - "5000:5000"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
-      start_period: 60s
-
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
     ports:
       - "8081:8081"
+    env_file:
+      - compose.env
     environment:
       PORT: "8081"
-      FIREBASE_AUTH_EMULATOR_HOST: firebase-emulators:9099
-      FIRESTORE_EMULATOR_HOST: firebase-emulators:8080
-      FIREBASE_STORAGE_EMULATOR_HOST: firebase-emulators:9199
-      GOOGLE_CLOUD_PROJECT: demo-vibe-coding
+      GOOGLE_CLOUD_PROJECT: hike-agentic-playground
     volumes:
       - ./backend:/app
       - /app/node_modules
-    depends_on:
-      firebase-emulators:
-        condition: service_healthy
+      - ${GCLOUD_ADC_DIR}:/root/.config/gcloud:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/api/health"]
       interval: 10s
@@ -55,14 +29,10 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "5173:5173"
+    env_file:
+      - compose.env
     environment:
-      VITE_USE_EMULATORS: "true"
-      VITE_FIREBASE_PROJECT_ID: demo-vibe-coding
-      VITE_FIREBASE_API_KEY: fake-api-key
-      VITE_FIREBASE_AUTH_DOMAIN: localhost
+      VITE_FIREBASE_PROJECT_ID: hike-agentic-playground
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    depends_on:
-      firebase-emulators:
-        condition: service_healthy

@@ -1,5 +1,5 @@
 import type { Context, Next } from "hono";
-import { getApps, initializeApp } from "firebase-admin/app";
+import { applicationDefault, getApps, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 
 export type AppVariables = {
@@ -7,8 +7,13 @@ export type AppVariables = {
   email?: string;
 };
 
+const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT ?? "hike-agentic-playground";
+
 if (getApps().length === 0) {
-  initializeApp({ projectId: process.env.GOOGLE_CLOUD_PROJECT ?? "demo-vibe-coding" });
+  initializeApp({
+    credential: applicationDefault(),
+    projectId: PROJECT_ID,
+  });
 }
 
 export async function verifyFirebaseAuth(
