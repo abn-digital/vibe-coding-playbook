@@ -19,7 +19,7 @@
 - **Local dev**: Docker Compose with **frontend + backend** against **hike-agentic-playground** GCP. ADC via `gcloud auth application-default login`. No Firebase emulators.
 - **Starter scaffold**: `template/` directory (copy to start a new POC). Documented and referenced from `docs/vibe-coding/`.
 - **POC verification**: typecheck, lint, unit tests (Firestore rules + server middleware), Docker health smoke. No Cypress E2E — E2E belongs to the product stage.
-- **POC CI**: PR = verify + Docker smoke (emulators only, no prod access). `main` = verify + Firebase Hosting preview. Production deploy = manual workflow dispatch or tag.
+- **POC CI**: PR = verify + Docker smoke (backend health, no prod deploy). `main` = verify + Firebase Hosting preview. Production deploy = manual workflow dispatch or tag.
 - **Observability**: Local Docker uses `json-file` logs. **Deployed** product stack uses `gcplogs` driver → Cloud Logging. POC Cloud Run uses native Cloud Logging. GCP uptime checks + alert policies on both stages.
 - **Ops Agent**: Host metrics on product GCE VMs; collection interval **20 minutes** (`collection_interval: 1200s`).
 - **Infrastructure as code**: All GCP resources provisioned with **Terraform** — compute, monitoring, uptime checks, alert policies. **Slack notification channels: look up existing channels via Terraform data sources first**; create only when none exists.

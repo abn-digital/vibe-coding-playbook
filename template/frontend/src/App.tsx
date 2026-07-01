@@ -12,7 +12,7 @@ export function App() {
     <main className="mx-auto flex min-h-screen max-w-lg flex-col justify-center gap-4 p-8">
       <h1 className="text-2xl font-semibold">Vibe-Coding POC</h1>
       <p className="text-neutral-600">
-        Firebase emulators + React + shadcn/ui. Sign in to test rules.
+        React + shadcn/ui against hike-agentic-playground. Sign in to test auth and rules.
       </p>
       {user ? (
         <p className="rounded-md border p-4 text-sm">

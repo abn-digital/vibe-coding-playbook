@@ -27,6 +27,8 @@ docker compose up --build
 - Frontend: http://localhost:5173
 - API health: http://localhost:8081/api/health
 
+See [02 — Local dev](../docs/vibe-coding/02-local-dev.md) for the validated checklist and troubleshooting.
+
 ## Layout
 
 ```

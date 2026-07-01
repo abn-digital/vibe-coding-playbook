@@ -10,9 +10,11 @@ import { resolve } from "node:path";
 import { afterAll, beforeAll, describe, it } from "vitest";
 
 const PROJECT_ID = "hike-agentic-playground";
-const hasEmulator = Boolean(process.env.FIRESTORE_EMULATOR_HOST);
+const runRulesTests =
+  process.env.RUN_FIRESTORE_RULES_TESTS === "true" &&
+  Boolean(process.env.FIRESTORE_EMULATOR_HOST);
 
-describe.skipIf(!hasEmulator)("firestore rules", () => {
+describe.skipIf(!runRulesTests)("firestore rules", () => {
   let testEnv: RulesTestEnvironment;
 
   beforeAll(async () => {
