@@ -106,7 +106,7 @@ Formato Drizzle Kit: `NNNN_descripcion.sql` (secuencial, generado automáticamen
 ### Aplicar migraciones
 
 ```bash
-# Local / CI - contra Supabase Postgres
+# Local / CI - contra supabase-db en la VM
 pnpm --filter backend run db:migrate
 
 # Manual en container (si hace falta un SQL suelto)

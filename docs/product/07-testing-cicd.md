@@ -150,11 +150,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - run: pnpm install && pnpm run build
+      - name: Deploy to self-hosted VM
+        uses: appleboy/ssh-action@v1
         with:
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SA }}
-          channelId: live
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            cd /opt/app
+            git pull
+            docker compose up -d --build
+            pnpm --filter backend run db:migrate
 ```
 
 ### Qué corre en cada etapa
@@ -163,8 +170,8 @@ jobs:
 Push a master/PR:
   ├── lint-and-typecheck   (ESLint + TypeScript)
   ├── test-policies        (cerbos compile)
-  └── build                (npm run build)
-        └── deploy         (solo en merge a master)
+  └── build                (pnpm run build)
+        └── deploy         (SSH a VM self-hosted, solo en merge a master)
 ```
 
 ---

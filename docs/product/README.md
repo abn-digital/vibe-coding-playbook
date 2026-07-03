@@ -1,6 +1,6 @@
 # Product Playbook
 
-> Production-grade web apps - Supabase self-hosted, VM deploy, multi-tenancy, Cerbos.
+> Production-grade web apps - fully self-hosted on GCE VM (Supabase stack, Hono/Drizzle, Cerbos).
 
 ## Chapters
 

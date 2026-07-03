@@ -51,56 +51,45 @@ API-owned data vive en **Postgres via [Drizzle](https://orm.drizzle.team)** (`ba
 |---|---|
 | **`backend/src/db/schema.ts`** | Tablas, tipos inferidos (`$inferSelect`) |
 | **`backend/src/routes/`** | Un sub-router Hono por recurso |
-| **`drizzle-kit migrate`** | Migraciones versionadas contra Supabase Postgres |
+| **`drizzle-kit migrate`** | Migraciones versionadas contra Postgres en la VM (`supabase-db`) |
 | **`backend/drizzle/*.sql`** | RLS policies y funciones `SECURITY DEFINER` (SQL custom) |
 
 ```bash
 # Después de editar schema.ts:
 pnpm --filter backend run db:generate   # genera migración SQL
-pnpm --filter backend run db:migrate    # aplica contra Supabase Postgres
+pnpm --filter backend run db:migrate    # aplica contra supabase-db en la VM
 ```
 
 > **Graduación desde POC:** Reutilizá `schema.ts` y los patrones de query. Cambiá `uid` por `tenant_id`, reemplazá `db:push` por `db:migrate`, y agregá RLS en migraciones SQL.
 
-### Supabase (self-hosted)
+### Supabase (self-hosted, obligatorio)
 
-Supabase provee la infra de datos y servicios auxiliares - **no** es la capa CRUD de la app:
+Supabase corre **en tu VM** via Docker Compose. No uses supabase.com cloud en producto.
 
 | Servicio | Rol en product |
 |---|---|
-| **PostgreSQL** | Host de la DB - Drizzle se conecta directo (`DATABASE_URL`) |
+| **PostgreSQL** | `supabase-db` container en la VM - Drizzle se conecta directo (`DATABASE_URL`). Sin Cloud SQL. |
 | **GoTrue** (Auth) | Google OAuth, magic links, MFA |
 | **Realtime** | WebSockets para cambios en tablas (opcional) |
 | **Storage** | Archivos con policies de acceso |
 | ~~PostgREST~~ | No usar como API de la app - Hono + Drizzle la reemplaza |
 
-#### ¿Por qué self-hosted?
+> **Regla:** Toda la stack de app (frontend, backend, DB, auth, storage, Cerbos, proxy) vive en **tu** servidor. OAuth IdP (Google/Microsoft) es la única excepción aceptada para login.
 
-| Cloud (supabase.com) | Self-hosted |
-|---|---|
-| ✅ Setup en 2 minutos | ❌ Setup más complejo |
-| ❌ Datos en servers de Supabase | ✅ Datos en TU servidor |
-| ❌ Límites del plan | ✅ Sin límites |
-| ❌ Latencia a US | ✅ Cerca de tus usuarios |
-| ❌ Vendor lock-in en pricing | ✅ Solo pagás el compute |
+### Lógica server-side fuera de Postgres: Hono
 
-> **Cuándo usar Cloud:** Prototipos, apps pequeñas, cuando no tenés ops team.
-> **Cuándo usar self-hosted:** Datos sensibles, compliance, apps de producción a escala.
-
-### Edge Functions: Deno
-
-Para lógica server-side que no vive en Postgres (proxies a APIs externas, webhooks):
+Para features que no viven en Postgres (analytics interno, webhooks entrantes, exports pesados), agregá rutas Hono en `backend/src/routes/` - **no** llames APIs SaaS externas:
 
 ```
-Browser → Edge Function → API externa (Cube, Slack, etc.)
+Browser → Hono /api/* → servicio interno en Docker Compose (misma red)
                 ↓
-    1. Verifica JWT
+    1. Verifica JWT (GoTrue)
     2. Lee rol desde la DB
     3. Chequea permisos (Cerbos)
-    4. Proxy con credenciales del servidor
+    4. Llama al container interno (analytics:4000, worker:3000, etc.)
 ```
 
-> **Regla:** Las credenciales de servicios externos NUNCA van al browser. Siempre pasan por un proxy server-side.
+> **Regla:** Credenciales de servicios internos NUNCA van al browser. Si necesitás un servicio nuevo, sumalo como container en `docker-compose.yml`, no como SaaS externo.
 
 ---
 
@@ -184,5 +173,7 @@ app.midominio.com {
 | **Firebase Firestore** | Sin relaciones, queries limitadas, security rules con un DSL raro. |
 | **JWT para roles** (en `app_metadata`) | Los JWTs son inmutables hasta que expiran. Un cambio de rol no toma efecto hasta el refresh. Leé el rol de la DB en cada request. |
 | **Roles hardcodeados en el código** | Cada cambio de permisos requiere un deploy. Usá un motor de policies (Cerbos). |
-| **PostgREST como API de la app** | El playbook usa Hono + Drizzle en `/api/*`. PostgREST queda disponible en el stack de Supabase pero no es el acceso CRUD de la app. |
+| **PostgREST como API de la app** | El playbook usa Hono + Drizzle en `/api/*`. PostgREST queda en el stack de Supabase self-hosted pero no es el acceso CRUD de la app. |
+| **APIs SaaS para lógica de app** | Analytics, chat, webhooks: containers en tu VM o rutas Hono. No Cube Cloud, Slack API para features de producto, etc. |
+| **Cloud SQL** | Managed Postgres fuera de tu control de deploy; el playbook usa Postgres en Docker en la VM con volumen persistente (`db-data`). |
 | **Optimistic mutations** | Rompen el audit log (el "antes" se sobreescribe antes de que el server responda). Usá pessimistic mode. |

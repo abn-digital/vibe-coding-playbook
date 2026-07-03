@@ -53,12 +53,13 @@ await supabase.auth.signInWithOtp({ email: 'user@example.com' });
 │  ¿Seguro?: ✅ SÍ - no bypassable                      │
 │  Propósito: Seguridad REAL de datos                     │
 ├─────────────────────────────────────────────────────────┤
-│  CAPA 3: EDGE GATE (Server-side)                        │
+│  CAPA 3: SERVER GATE (Server-side)                      │
 │                                                         │
-│  Motor: Cerbos en edge functions                        │
+│  Motor: Cerbos en rutas Hono del backend                │
 │  Qué hace: Autoriza requests que NO pasan por Postgres  │
 │  ¿Seguro?: ✅ SÍ - server-side                        │
-│  Propósito: Proteger APIs externas (Cube, etc.)         │
+│  Propósito: Proteger llamadas a servicios internos      │
+│             (analytics, workers) en la misma VM           │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -195,33 +196,35 @@ CREATE TRIGGER guard_profile_changes
 
 ---
 
-## Edge Gate: Proteger APIs que no pasan por Postgres
+## Server Gate: Proteger rutas que no pasan por Postgres
 
-Cuando tu app proxy-ea a una API externa (como Cube Analytics), esa request **no pasa por PostgreSQL**, así que RLS no te protege. Necesitás un gate server-side:
+Cuando tu app llama a un **servicio interno** (analytics container, worker, export job) esa request **no pasa por PostgreSQL**, así que RLS no te protege. Necesitás un gate en el backend Hono:
 
 ```typescript
-// supabase/functions/_shared/auth.ts
-export async function authorizeRequest(req: Request) {
-    // 1. Verificar JWT
-    const token = req.headers.get('Authorization')?.replace('Bearer ', '');
-    const payload = await verifyJWT(token, JWT_SECRET);
-    if (!payload) return { status: 401, error: 'Invalid token' };
-    
+// backend/src/middleware/authorizeAnalytics.ts
+export async function authorizeAnalytics(c: Context, next: Next) {
+    // 1. JWT ya verificado por middleware upstream
+    const userId = c.get("userId");
+
     // 2. Leer rol desde profiles (NO del JWT)
-    const profile = await getProfile(payload.sub);
-    if (!profile) return { status: 403, error: 'No profile' };
-    
+    const profile = await db.query.profiles.findFirst({
+        where: eq(profiles.id, userId),
+    });
+    if (!profile) return c.json({ error: "No profile" }, 403);
+
     // 3. Chequear con Cerbos
     const allowed = await cerbos.isAllowed({
         principal: { id: profile.id, roles: [profile.role] },
-        resource: { kind: 'analytics' },
-        action: 'read',
+        resource: { kind: "analytics" },
+        action: "read",
     });
-    if (!allowed) return { status: 403, error: 'Forbidden' };
-    
-    return { status: 200, profile };
+    if (!allowed) return c.json({ error: "Forbidden" }, 403);
+
+    await next();
 }
 ```
+
+La ruta Hono proxy-ea al container interno (`http://analytics:4000`) - nunca a un SaaS externo.
 
 ---
 
@@ -234,4 +237,4 @@ export async function authorizeRequest(req: Request) {
 - [ ] No se usa `app_metadata` del JWT para determinar roles (Google lo sobreescribe)
 - [ ] Un trigger impide self-promotion (cambiar el propio rol/tenant)
 - [ ] El access control provider falla **closed** en producción (si Cerbos cae, se deniega todo)
-- [ ] Las credenciales de APIs externas solo viven en edge functions, nunca en el frontend
+- [ ] Las credenciales de servicios internos solo viven en el backend (env vars de Docker), nunca en el frontend

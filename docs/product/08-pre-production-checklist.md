@@ -24,8 +24,9 @@
 ### Autorización
 - [ ] **Cerbos PDP** falla **closed** en producción (si cae, se deniega todo)
 - [ ] **Catch-all policy** (`default.yaml`) existe para módulos sin policy dedicada
-- [ ] **Edge functions** verifican JWT + rol + Cerbos antes de proxy-ar a APIs externas
-- [ ] **Credenciales de APIs externas** (Cube, Slack, etc.) solo en edge functions, nunca en el frontend
+- [ ] **Edge functions / rutas Hono** verifican JWT + rol + Cerbos antes de proxy-ar a servicios internos
+- [ ] **Credenciales de servicios internos** (analytics, workers) solo en env vars del backend/Docker, nunca en el frontend
+- [ ] **Sin APIs SaaS** para lógica de app - integraciones corren como containers en la VM
 
 ### Infraestructura
 - [ ] **HTTPS** habilitado en todos los dominios (Caddy lo hace automático)
@@ -77,14 +78,14 @@
 - [ ] **Restart policy** configurada (`restart: unless-stopped`)
 
 ### Backup
-- [ ] **Volúmenes de DB** tienen backup periódico
+- [ ] **Volúmenes de DB** (`db-data`) tienen backup periódico desde la VM - no depender de snapshots managed de Cloud SQL
 - [ ] **Storage (GCS/S3)** tiene versionado habilitado
 - [ ] **Secrets** documentados en un lugar seguro (no en un .txt en el Desktop)
 
 ### CI/CD
 - [ ] **GitHub Actions** configurado (lint + build + deploy en merge a master)
-- [ ] **Preview deploys** en PRs (cada PR tiene su URL)
-- [ ] **Secrets de CI** configurados en GitHub (Firebase SA, etc.)
+- [ ] **Preview deploys** en PRs via verify job (typecheck, lint, build, cerbos compile) - deploy solo a VM en merge
+- [ ] **Secrets de CI** configurados en GitHub (VM SSH key, host, etc.)
 
 ---
 

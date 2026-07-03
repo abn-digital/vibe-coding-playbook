@@ -48,4 +48,4 @@ terraform/         GCP provisioning (plan before apply)
 
 ## Data
 
-API-owned data lives in **Postgres via [Drizzle](https://orm.drizzle.team)** - schema in `backend/src/db/schema.ts`, synced with `db:push` (no migration files in POC). Firestore remains for client-direct, user-scoped docs under security rules. Adding a resource: define the table in `schema.ts`, add a sub-router in `src/routes/`, mount it in `src/app.ts`.
+API-owned data lives in **Postgres via [Drizzle](https://orm.drizzle.team)** - schema in `backend/src/db/schema.ts`, synced with `db:push` (no migration files in POC). Local and deployed Postgres both run in Docker on a VM - no Cloud SQL. Firestore remains for client-direct, user-scoped docs under security rules. Adding a resource: define the table in `schema.ts`, add a sub-router in `src/routes/`, mount it in `src/app.ts`.

@@ -21,11 +21,11 @@ Chosen: **Drizzle + Postgres for API-owned data in both stages**, because the sa
 
 * Local dev adds a `postgres:17-alpine` service to Docker Compose; schema syncs via `drizzle-kit push` (no migration files).
 * Firestore remains only for client-direct, user-scoped docs under security rules.
-* Deployed POCs need a Postgres instance (smallest Cloud SQL tier or a free-tier Supabase project) - decide per project at first deploy and record a MADR.
+* Deployed POCs run Postgres in Docker on a **GCE VM** (same `postgres:17-alpine` image as local compose, persistent volume). Cloud Run connects via VPC/private IP. No Cloud SQL, no supabase.com cloud.
 
 **Product**
 
-* Schema lives in `backend/src/db/schema.ts` (same layout as POC); migrations via `drizzle-kit generate` + `drizzle-kit migrate` against Supabase Postgres.
+* Schema lives in `backend/src/db/schema.ts` (same layout as POC); migrations via `drizzle-kit generate` + `drizzle-kit migrate` against **self-hosted** Supabase Postgres (`supabase-db` container) on the product VM.
 * RLS policies ship as SQL in `backend/drizzle/` custom migration files (alongside Drizzle-generated DDL) - defense in depth even though the Hono API is the primary access path.
 * Queries are tenant-scoped (`where tenant_id = ...`) with `limit(25)`; new resource = table in `schema.ts` + sub-router in `src/routes/` + mount in `src/app.ts`.
-* Supabase keeps GoTrue (auth), Realtime, and Storage; PostgREST is not the app CRUD layer.
+* Self-hosted Supabase keeps GoTrue (auth), Realtime, and Storage on the same VM; PostgREST is not the app CRUD layer. No external SaaS APIs for app features.

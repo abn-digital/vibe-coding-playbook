@@ -26,7 +26,7 @@ Use Cloud Run only when Firestore rules cannot express the logic (external APIs,
 
 ## API data
 
-API-owned data lives in **Postgres via [Drizzle](https://orm.drizzle.team)** (`backend/src/db/`) - see [MADR 0001](../../docs/decisions/0001-drizzle-postgres-for-poc-api-data.md). Local dev runs Postgres in Docker Compose; schema syncs with `pnpm --filter backend run db:push` (no migration files in POC). The same ORM and schema carry into the product stage (Supabase Postgres), shrinking the graduation rebuild. Deployed POCs pick a Postgres home (smallest Cloud SQL tier or free-tier Supabase) at first deploy.
+API-owned data lives in **Postgres via [Drizzle](https://orm.drizzle.team)** (`backend/src/db/`) - see [MADR 0001](../../docs/decisions/0001-drizzle-postgres-for-poc-api-data.md). Local dev runs Postgres in Docker Compose; schema syncs with `pnpm --filter backend run db:push` (no migration files in POC). The same ORM and schema carry into the product stage (Supabase Postgres container on the product VM), shrinking the graduation rebuild. Deployed POCs run Postgres in Docker on a small GCE VM - Cloud Run reaches it over VPC. No Cloud SQL.
 
 ## Firebase services
 

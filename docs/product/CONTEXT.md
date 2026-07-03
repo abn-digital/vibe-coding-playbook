@@ -1,8 +1,12 @@
 # Product
 
-Production-grade apps operated under the product playbook: Supabase self-hosted, VM deploy, multi-tenancy, Cerbos, audit logs.
+Production-grade apps operated under the product playbook: **fully self-hosted** on a GCE VM (Supabase stack, Hono/Drizzle API, Cerbos, Caddy), multi-tenancy, audit logs.
 
 ## Language
+
+**Self-hosted**:
+All app runtime services run on infrastructure you operate (product GCE VM + Docker Compose). Postgres lives in the `supabase-db` container with a persistent volume - never Cloud SQL or managed Postgres SaaS.
+_Avoid_: Cloud SQL, managed Supabase cloud, external CRUD APIs, proxying to off-VM SaaS for core features
 
 **Tenant**:
 An organization or customer served by a single app instance, isolated from other tenants by `tenant_id` and Row Level Security.

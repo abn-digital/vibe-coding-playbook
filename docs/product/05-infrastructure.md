@@ -58,7 +58,7 @@ docker compose -f docker/docker-compose.yml down -v
 
 ```yaml
 services:
-  # Base de datos - SIEMPRE primero, con healthcheck
+  # Base de datos - Postgres en la VM (no Cloud SQL). SIEMPRE primero, con healthcheck
   supabase-db:
     image: supabase/postgres:15.x
     healthcheck:
@@ -201,12 +201,14 @@ VITE_SUPABASE_ANON_KEY=eyJ...    # Anon key es safe (RLS protege)
 
 # ❌ NUNCA poner en VITE_ (secreto)
 SERVICE_ROLE_KEY=eyJ...           # Bypasea RLS
-CUBE_API_SECRET=abc...            # Credenciales de API externa
+ANALYTICS_INTERNAL_TOKEN=abc...   # Credenciales de servicio interno en Docker
 ```
 
 ---
 
 ## GitHub Actions: CI/CD
+
+Product deploys to **your GCE VM** - not Firebase Hosting, not supabase.com.
 
 ### Deploy automático en merge a main/master
 
@@ -220,28 +222,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - run: pnpm install && pnpm run build
+      - name: Deploy to VM
+        uses: appleboy/ssh-action@v1
         with:
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SA }}
-          channelId: live
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            cd /opt/app
+            git pull
+            docker compose pull
+            docker compose up -d --build
+            pnpm --filter backend run db:migrate
 ```
 
-### Preview en Pull Requests
+### Verify en Pull Requests (sin deploy)
 
 ```yaml
-name: Deploy Preview on PR
+name: Verify on PR
 on: pull_request
 jobs:
-  preview:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SA }}
-          # Sin channelId = preview channel temporal
+      - run: pnpm install
+      - run: pnpm run typecheck && pnpm run lint && pnpm run build
+      - run: pnpm exec cerbos compile cerbos/policies
 ```
 
-> **Resultado:** Cada PR tiene su propia URL de preview. Los reviewers pueden ver los cambios en vivo antes de aprobar.
+> **Regla:** CI verifica y construye; el deploy corre contra **tu VM self-hosted**. No uses Firebase Hosting ni previews en SaaS para producto.

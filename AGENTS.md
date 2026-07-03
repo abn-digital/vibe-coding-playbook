@@ -7,7 +7,7 @@ Read `CONTEXT.md` and `CONTEXT-MAP.md` before any work. This repo documents two 
 | Stage | Docs | When |
 |---|---|---|
 | **Vibe-coding POC** | `docs/vibe-coding/` | Disposable experiments, Firebase stack |
-| **Product** | `docs/product/` | Production-grade, Supabase on VM |
+| **Product** | `docs/product/` | Self-hosted Supabase stack on GCE VM |
 
 Graduation is one-way rebuild - see graduation checklist in `CONTEXT.md`.
 
@@ -84,8 +84,16 @@ Project-local skills live in `.agents/skills/` (symlinked to `.claude/skills/`).
 
 - API-owned data: **Postgres via Drizzle** ([MADR 0001](docs/decisions/0001-drizzle-postgres-for-poc-api-data.md)).
 - Schema lives in `backend/src/db/schema.ts`; Hono handlers in `src/routes/`, mounted from `src/app.ts`. Never register handlers directly in `index.ts`.
-- **POC:** sync with `pnpm --filter backend run db:push` - no migration files. Queries are user-scoped (`where uid = <Firebase uid>`) with `limit(25)`.
-- **Product:** migrations via `drizzle-kit generate` + `pnpm --filter backend run db:migrate` against Supabase Postgres. RLS policies in SQL migration files under `backend/drizzle/`. Queries are tenant-scoped (`where tenant_id = ...`) with `limit(25)`. See `docs/product/`.
+- **POC:** sync with `pnpm --filter backend run db:push` - no migration files. Queries are user-scoped (`where uid = <Firebase uid>`) with `limit(25)`. Deployed POCs: Postgres in Docker on a GCE VM (not Cloud SQL).
+- **Product:** migrations via `drizzle-kit generate` + `pnpm --filter backend run db:migrate` against the `supabase-db` container on the product VM. RLS policies in SQL migration files under `backend/drizzle/`. Queries are tenant-scoped (`where tenant_id = ...`) with `limit(25)`. See `docs/product/`.
+- **Never Cloud SQL** or other managed Postgres SaaS - database always runs in Docker on a VM you operate, with a persistent volume.
+
+### Self-hosted (product)
+
+- **All runtime services** on the product VM via Docker Compose: frontend static files, Hono backend, self-hosted Supabase (Postgres, GoTrue, Realtime, Storage), Cerbos, Caddy, Redis.
+- **No supabase.com cloud**, no SaaS CRUD APIs, no third-party app backends (analytics, chat, webhooks). Integrations run as containers on the same stack or as Hono routes.
+- **OAuth IdP** (Google, Microsoft) is allowed for login only - identity is external, the app stack is not.
+- **Tier 1 ops alerts** to Slack are the only approved external notification channel.
 
 ### Terraform
 

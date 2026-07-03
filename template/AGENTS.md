@@ -54,7 +54,7 @@ terraform/environments/   Per-environment provisioning
 ### API data
 
 - API-owned data: **Postgres via Drizzle**.
-- Schema lives in `backend/src/db/schema.ts`; sync with `pnpm --filter backend run db:push` - no migration files in POC.
+- Schema lives in `backend/src/db/schema.ts`; sync with `pnpm --filter backend run db:push` - no migration files in POC. Deployed POCs: Postgres in Docker on a GCE VM (not Cloud SQL).
 - Queries are user-scoped (`where uid = <Firebase uid>`) with `limit(25)`.
 - New resource = table in `schema.ts` + sub-router in `src/routes/` + mount in `src/app.ts`. Never register handlers directly in `index.ts`.
 
