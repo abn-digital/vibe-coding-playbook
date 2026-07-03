@@ -30,7 +30,3 @@ See [AGENTS.md](AGENTS.md). Run `/grill-with-docs` before significant work.
 
 - [CONTEXT.md](CONTEXT.md) - shared glossary and graduation checklist
 - [CONTEXT-MAP.md](CONTEXT-MAP.md) - conventions and context index
-
-## License
-
-MIT
