@@ -194,7 +194,7 @@ export default defineConfig({
             output: {
                 manualChunks: {
                     'vendor-react': ['react', 'react-dom'],
-                    'vendor-refine': ['@refinedev/core', '@refinedev/supabase'],
+                    'vendor-refine': ['@refinedev/core', '@refinedev/simple-rest'],
                     'vendor-ui': ['@tanstack/react-table', 'recharts'],
                 },
             },

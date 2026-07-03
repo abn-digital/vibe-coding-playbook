@@ -24,6 +24,23 @@ Un **tenant** = una organización/empresa/cliente. Multi-tenancy = una sola inst
 
 ### 1. Columna `tenant_id` en cada tabla
 
+Drizzle schema (`backend/src/db/schema.ts`):
+
+```ts
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { tenants } from "./tenants.js";
+
+export const tasks = pgTable("tasks", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  tenantId: uuid("tenant_id").notNull().references(() => tenants.id),
+  title: text("title").notNull(),
+  status: text("status").notNull().default("pending"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+```
+
+SQL equivalente (generado por `drizzle-kit migrate`):
+
 ```sql
 CREATE TABLE tasks (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

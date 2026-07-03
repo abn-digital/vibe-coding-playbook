@@ -7,7 +7,7 @@ Dos etapas del ciclo de vida para construir aplicaciones web: POCs desechables r
 | Etapa | Empezá acá | Stack |
 |---|---|---|
 | **POC vibe-coding** | [docs/vibe-coding/](docs/vibe-coding/) + [template/](template/) | Firebase, Cloud Run, hike-agentic-playground GCP |
-| **Producto** | [docs/product/](docs/product/) | Supabase self-hosted, VM GCE, Cerbos |
+| **Producto** | [docs/product/](docs/product/) | Supabase Postgres + API Hono/Drizzle, VM GCE, Cerbos |
 
 ## Inicio rápido (POC nuevo)
 
@@ -29,7 +29,3 @@ Ver [AGENTS.md](AGENTS.md). Ejecutá `/grill-with-docs` antes de trabajo signifi
 
 - [CONTEXT.md](CONTEXT.md) - glosario y checklist de graduación
 - [CONTEXT-MAP.md](CONTEXT-MAP.md) - convenciones
-
-## Licencia
-
-MIT

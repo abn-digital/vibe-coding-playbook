@@ -12,6 +12,10 @@ _Avoid_: Client, account, org (in code)
 Postgres-enforced data isolation - the server rejects cross-tenant reads and writes regardless of what the client sends.
 _Avoid_: Client-side filtering, app-level checks only
 
+**Drizzle**:
+The typed ORM for API-owned data in `backend/src/db/`. Same schema and query patterns as the POC stage; product uses versioned migrations instead of `db:push`.
+_Avoid_: PostgREST as the app CRUD layer, Prisma
+
 **gcplogs**:
 The Docker logging driver that ships container stdout/stderr to Google Cloud Logging. Used on deployed product stacks (GCE VM), not in local dev.
 _Avoid_: json-file (in production), fluentd

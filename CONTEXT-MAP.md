@@ -15,6 +15,7 @@
 - **README**: `README.md` (English) + `README.es.md` (Spanish summary / entry point).
 - **Project-specific decisions**: [MADR](https://adr.github.io/madr/) records in `docs/decisions/` when a choice deviates from playbook defaults.
 - **Scaffolded POC layout**: `frontend/` and `backend/` at repo root. Security boundary (rules, `firebase.json`, server middleware) lives inside `backend/`.
+- **Product layout**: same `frontend/` + `backend/` split; `backend/src/db/` holds Drizzle schema, Hono handlers in `src/routes/`. Supabase provides Postgres, auth, realtime, storage - not the app CRUD API.
 - **Secrets**: [Varlock](https://varlock.dev) with `@varlock/google-secret-manager-plugin` - no manual `.env` manipulation; schema-driven config only.
 - **Local dev**: Docker Compose with **frontend + backend** against **hike-agentic-playground** GCP. ADC via `gcloud auth application-default login`. No Firebase emulators.
 - **Starter scaffold**: `template/` directory (copy to start a new POC). Documented and referenced from `docs/vibe-coding/`.

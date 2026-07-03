@@ -12,14 +12,14 @@
 |---|---|
 | **React** (no Vue, no Svelte) | Ecosistema más grande, más librerías, más gente que lo conoce. Refine y shadcn solo existen para React. |
 | **Vite** (no Webpack, no Next.js) | Build instantáneo en dev, configuración mínima. No necesitamos SSR porque la app está detrás de auth. |
-| **TypeScript** en modo estricto | Los tipos generados desde la DB (`Tables<"tasks">`) te dan autocompletado y te avisan errores en compile time, no en runtime. |
+| **TypeScript** en modo estricto | Los tipos inferidos desde Drizzle (`tasks.$inferSelect`) dan autocompletado y errores en compile time, no en runtime. |
 | **SPA** (no SSR/SSG) | La app requiere auth para todo. No hay contenido público que indexar. No necesitamos SEO. SSR agrega complejidad sin beneficio. |
 
 ### Framework CRUD: Refine v5
 
 **¿Por qué no hacer todo a mano?** Porque en una plataforma con 19+ módulos CRUD, el 80% del código es repetitivo: listar datos, paginar, filtrar, crear, editar, borrar. Refine te da:
 
-- `useList()`, `useCreate()`, `useUpdate()`, `useDelete()` - conectados a Supabase
+- `useList()`, `useCreate()`, `useUpdate()`, `useDelete()` - conectados al backend Hono en `/api/*` (custom data provider)
 - `authProvider` - login/logout/session refresh
 - `accessControlProvider` - integración con Cerbos
 - `auditLogProvider` - logging automático de cambios
@@ -43,17 +43,36 @@ const tasks = query?.data?.data ?? [];
 
 ## Backend
 
+### API: Hono + Drizzle
+
+API-owned data vive en **Postgres via [Drizzle](https://orm.drizzle.team)** (`backend/src/db/`) - ver [MADR 0001](../../docs/decisions/0001-drizzle-postgres-for-poc-api-data.md). El mismo layout que el POC: `src/app.ts` monta sub-routers Hono en `/api/*`, handlers tipados con el schema Drizzle.
+
+| Pieza | Rol |
+|---|---|
+| **`backend/src/db/schema.ts`** | Tablas, tipos inferidos (`$inferSelect`) |
+| **`backend/src/routes/`** | Un sub-router Hono por recurso |
+| **`drizzle-kit migrate`** | Migraciones versionadas contra Supabase Postgres |
+| **`backend/drizzle/*.sql`** | RLS policies y funciones `SECURITY DEFINER` (SQL custom) |
+
+```bash
+# Después de editar schema.ts:
+pnpm --filter backend run db:generate   # genera migración SQL
+pnpm --filter backend run db:migrate    # aplica contra Supabase Postgres
+```
+
+> **Graduación desde POC:** Reutilizá `schema.ts` y los patrones de query. Cambiá `uid` por `tenant_id`, reemplazá `db:push` por `db:migrate`, y agregá RLS en migraciones SQL.
+
 ### Supabase (self-hosted)
 
-Supabase te da **5 servicios en 1**:
+Supabase provee la infra de datos y servicios auxiliares - **no** es la capa CRUD de la app:
 
-| Servicio | Reemplaza a... | Ventaja |
-|---|---|---|
-| **PostgreSQL** | Firebase Firestore / MongoDB | SQL real, relaciones, transacciones, RLS |
-| **GoTrue** (Auth) | Firebase Auth / Auth0 | Google OAuth, magic links, MFA |
-| **PostgREST** (API) | Express/Fastify custom API | API REST automática desde tus tablas, zero código |
-| **Realtime** | Socket.io / Pusher | WebSockets nativos conectados a Postgres |
-| **Storage** | Firebase Storage / S3 | Archivos con policies de acceso |
+| Servicio | Rol en product |
+|---|---|
+| **PostgreSQL** | Host de la DB - Drizzle se conecta directo (`DATABASE_URL`) |
+| **GoTrue** (Auth) | Google OAuth, magic links, MFA |
+| **Realtime** | WebSockets para cambios en tablas (opcional) |
+| **Storage** | Archivos con policies de acceso |
+| ~~PostgREST~~ | No usar como API de la app - Hono + Drizzle la reemplaza |
 
 #### ¿Por qué self-hosted?
 
@@ -144,7 +163,7 @@ docker compose logs -f    # Ve logs en tiempo real
 # Caddyfile completo para una SPA con API proxy:
 app.midominio.com {
     handle /api/* {
-        reverse_proxy supabase-kong:8000
+        reverse_proxy backend:8081
     }
     handle {
         root * /srv
@@ -165,4 +184,5 @@ app.midominio.com {
 | **Firebase Firestore** | Sin relaciones, queries limitadas, security rules con un DSL raro. |
 | **JWT para roles** (en `app_metadata`) | Los JWTs son inmutables hasta que expiran. Un cambio de rol no toma efecto hasta el refresh. Leé el rol de la DB en cada request. |
 | **Roles hardcodeados en el código** | Cada cambio de permisos requiere un deploy. Usá un motor de policies (Cerbos). |
+| **PostgREST como API de la app** | El playbook usa Hono + Drizzle en `/api/*`. PostgREST queda disponible en el stack de Supabase pero no es el acceso CRUD de la app. |
 | **Optimistic mutations** | Rompen el audit log (el "antes" se sobreescribe antes de que el server responda). Usá pessimistic mode. |

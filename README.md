@@ -7,7 +7,7 @@ Two lifecycle stages for building web apps - fast disposable POCs, then producti
 | Stage | Start here | Stack |
 |---|---|---|
 | **Vibe-coding POC** | [docs/vibe-coding/](docs/vibe-coding/) + [template/](template/) | Firebase, Cloud Run, hike-agentic-playground GCP |
-| **Product** | [docs/product/](docs/product/) | Supabase self-hosted, GCE VM, Cerbos |
+| **Product** | [docs/product/](docs/product/) | Supabase Postgres + Hono/Drizzle API, GCE VM, Cerbos |
 
 ## Quick start (new POC)
 

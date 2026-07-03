@@ -22,3 +22,5 @@
 ## Graduation entry
 
 If you are graduating from a vibe-coding POC, read the [graduation checklist](../../CONTEXT.md) first - then start here with a **rebuild**, not a migration.
+
+**Carry forward from POC:** `backend/src/db/schema.ts`, Drizzle query patterns, and Hono sub-router layout. **Replace:** Firebase auth → Supabase GoTrue, `uid` scoping → `tenant_id` + RLS, `db:push` → `drizzle-kit migrate`. See [MADR 0001](../../docs/decisions/0001-drizzle-postgres-for-poc-api-data.md).

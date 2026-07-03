@@ -24,9 +24,7 @@ En una plataforma con 19+ módulos CRUD, el 80% del código es igual: listar dat
 ```tsx
 import { DataTable } from "@/components/data-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Tables } from "@/types";
-
-type Task = Tables<"tasks">;
+import type { Task } from "@/types";  // re-export de tasks.$inferSelect en schema.ts
 
 const columns: ColumnDef<Task>[] = [
     { accessorKey: "title", header: "Título" },
@@ -165,14 +163,15 @@ export function TaskEdit() {
 
 ## Agregar un módulo nuevo (checklist)
 
-1. **DB:** Crear tabla con `tenant_id` + RLS (migración)
-2. **Types:** `npm run gen:types` (regenerar tipos)
-3. **Fields:** `src/features/{module}/fields.ts` (schema de campos)
-4. **List:** `src/features/{module}/list.tsx` (DataTable + columnas)
-5. **Create:** `src/features/{module}/create.tsx` (CrudForm)
-6. **Edit:** `src/features/{module}/edit.tsx` (CrudForm)
-7. **Resource:** Agregar a `src/config/resources.ts`
-8. **Routes:** Agregar a `src/App.tsx`
-9. **Icon:** Agregar a `ICON_MAP` en sidebar
+1. **DB:** Tabla en `backend/src/db/schema.ts` + migración Drizzle + RLS SQL en `backend/drizzle/`
+2. **API:** Sub-router Hono en `backend/src/routes/{module}.ts`, montar en `src/app.ts`
+3. **Types:** exportar `$inferSelect` / `$inferInsert` desde schema (o re-export en `src/types/`)
+4. **Fields:** `src/features/{module}/fields.ts` (schema de campos)
+5. **List:** `src/features/{module}/list.tsx` (DataTable + columnas)
+6. **Create:** `src/features/{module}/create.tsx` (CrudForm)
+7. **Edit:** `src/features/{module}/edit.tsx` (CrudForm)
+8. **Resource:** Agregar a `src/config/resources.ts`
+9. **Routes:** Agregar a `src/App.tsx`
+10. **Icon:** Agregar a `ICON_MAP` en sidebar
 
 > **Tiempo estimado:** 30 minutos para un módulo CRUD completo.

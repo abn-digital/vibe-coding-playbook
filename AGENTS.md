@@ -18,19 +18,22 @@ Graduation is one-way rebuild - see graduation checklist in `CONTEXT.md`.
 3. Run `/grill-with-docs` before significant features.
 4. Record project-specific deviations as [MADR](https://adr.github.io/madr/) in `docs/decisions/`.
 
-## Project layout (from `template/`)
+## Project layout
+
+POC projects copy `template/`. Product projects use the same split:
 
 ```
-frontend/                 React + Vite + TypeScript + shadcn/ui
+frontend/                 React + Vite + TypeScript + shadcn/ui + Refine
 backend/
   src/app.ts              Route wiring - health public, /api/* behind auth
   src/routes/             One Hono sub-router per resource, handlers only
-  src/middleware/         Auth verification
+  src/middleware/         Auth verification (Firebase in POC, Supabase JWT in product)
   src/db/                 Drizzle schema + client (Postgres)
-  src/lib/                firebase-admin init
-  rules/                  Firestore + Storage rules + unit tests
+  drizzle/                Versioned migrations + RLS SQL (product only)
 terraform/environments/   Per-environment provisioning
 ```
+
+POC template also includes `src/lib/` (firebase-admin), `rules/` (Firestore + Storage).
 
 ## Skills (always re-read before codegen and commit)
 
@@ -77,12 +80,12 @@ Project-local skills live in `.agents/skills/` (symlinked to `.claude/skills/`).
 - Cloud Run: `minScale: 0`, `maxScale: 1`, cold starts accepted.
 - Firestore: client-direct, user-scoped docs only - `limit(25)`, no collection-group queries.
 
-### API data (POC)
+### API data (both stages)
 
 - API-owned data: **Postgres via Drizzle** ([MADR 0001](docs/decisions/0001-drizzle-postgres-for-poc-api-data.md)).
-- Schema lives in `backend/src/db/schema.ts`; sync with `pnpm --filter backend run db:push` - no migration files in POC.
-- Queries are user-scoped (`where uid = <Firebase uid>`) with `limit(25)`.
-- New resource = table in `schema.ts` + sub-router in `src/routes/` + mount in `src/app.ts`. Never register handlers directly in `index.ts`.
+- Schema lives in `backend/src/db/schema.ts`; Hono handlers in `src/routes/`, mounted from `src/app.ts`. Never register handlers directly in `index.ts`.
+- **POC:** sync with `pnpm --filter backend run db:push` - no migration files. Queries are user-scoped (`where uid = <Firebase uid>`) with `limit(25)`.
+- **Product:** migrations via `drizzle-kit generate` + `pnpm --filter backend run db:migrate` against Supabase Postgres. RLS policies in SQL migration files under `backend/drizzle/`. Queries are tenant-scoped (`where tenant_id = ...`) with `limit(25)`. See `docs/product/`.
 
 ### Terraform
 

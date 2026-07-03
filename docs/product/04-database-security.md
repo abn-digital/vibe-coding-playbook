@@ -85,25 +85,32 @@ Basado en el security checklist oficial de Supabase:
 
 ## Migraciones: Buenas prácticas
 
+### Schema Drizzle + RLS SQL
+
+El DDL de tablas vive en `backend/src/db/schema.ts`. Las migraciones versionadas salen de Drizzle Kit; las policies RLS y funciones `private.*` van en archivos SQL custom dentro de `backend/drizzle/`.
+
+```
+backend/
+  src/db/schema.ts          # Tablas Drizzle (source of truth para DDL)
+  drizzle/
+    0000_initial.sql        # Generado por drizzle-kit generate
+    0001_rls_tasks.sql      # Custom: ENABLE RLS + policies
+    meta/
+  drizzle.config.ts
+```
+
 ### Naming convention
 
-```
-supabase/migrations/
-├── 20260621000001_tenants_and_profiles.sql
-├── 20260621000002_core_tables.sql
-├── 20260621000003_secondary_tables.sql
-└── ...
-```
+Formato Drizzle Kit: `NNNN_descripcion.sql` (secuencial, generado automáticamente). Los SQL custom usan el siguiente número disponible con sufijo descriptivo (`0001_rls_tasks.sql`).
 
-Formato: `YYYYMMDD_NNNNNN_descripcion.sql`
-
-### Aplicar migraciones al container
+### Aplicar migraciones
 
 ```bash
-# Copiar el archivo AL container (no pipe, que rompe encoding en Windows)
-docker cp migration.sql container:/tmp/apply.sql
+# Local / CI - contra Supabase Postgres
+pnpm --filter backend run db:migrate
 
-# Ejecutar con ON_ERROR_STOP
+# Manual en container (si hace falta un SQL suelto)
+docker cp migration.sql container:/tmp/apply.sql
 docker exec -e PGPASSWORD="$PW" -e PGCLIENTENCODING=UTF8 \
     container psql -U supabase_admin -d supabase \
     -v ON_ERROR_STOP=1 -f /tmp/apply.sql

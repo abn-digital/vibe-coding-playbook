@@ -39,9 +39,10 @@
 ## Funcionalidad
 
 ### Datos
-- [ ] **Migraciones** aplicadas y exitosas (sin errores)
+- [ ] **Migraciones Drizzle** aplicadas (`pnpm --filter backend run db:migrate`)
+- [ ] **RLS policies** en migraciones SQL custom bajo `backend/drizzle/`
 - [ ] **Seed data** cargado (tenants, domains, themes)
-- [ ] **Tipos TypeScript** regenerados después de la última migración (`npm run gen:types`)
+- [ ] **Tipos TypeScript** al día con el schema Drizzle (`export type Task = typeof tasks.$inferSelect`)
 - [ ] **Realtime** funciona (WebSocket se conecta, cambios se propagan)
 
 ### UI

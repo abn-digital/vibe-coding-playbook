@@ -16,16 +16,15 @@
 │  └──────────┬──────────────────────┬────────────┘   │
 │             │                      │                │
 │  ┌──────────▼──────────┐  ┌───────▼────────────┐   │
-│  │  Frontend (SPA)      │  │  Kong (:8000)       │   │
-│  │  dist/ servido       │  │  API Gateway        │   │
-│  │  como static files   │  │  → Auth, REST,      │   │
-│  └─────────────────────┘  │    Realtime, Storage │   │
-│                            └───────┬─────────────┘   │
+│  │  Frontend (SPA)      │  │  Backend (Hono)     │   │
+│  │  dist/ servido       │  │  :8081 /api/*       │   │
+│  │  como static files   │  │  Drizzle → Postgres │   │
+│  └─────────────────────┘  └───────┬─────────────┘   │
 │                                    │                 │
 │  ┌─────────────┐  ┌───────────────▼──────────────┐  │
 │  │ Cerbos      │  │  PostgreSQL + GoTrue +        │  │
-│  │ :3593       │  │  PostgREST + Realtime +       │  │
-│  │ Permisos    │  │  Storage + Edge Functions     │  │
+│  │ :3593       │  │  Realtime + Storage           │  │
+│  │ Permisos    │  │  (Kong para auth/realtime)    │  │
 │  └─────────────┘  └──────────────────────────────┘  │
 │                                                     │
 │  ┌─────────────┐                                    │
@@ -84,9 +83,20 @@ services:
       - supabase-realtime
       - supabase-storage
   
-  # Reverse proxy - depende del gateway
+  # Backend API - Hono + Drizzle
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgres://supabase_admin:${POSTGRES_PASSWORD}@supabase-db:5432/postgres
+      PORT: "8081"
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+
+  # Reverse proxy - depende del backend y del gateway Supabase
   caddy:
     depends_on:
+      - backend
       - supabase-kong
 
 volumes:
@@ -108,15 +118,15 @@ Edge Functions (independiente) ──
 | Concepto | Cuándo corre | Para qué |
 |---|---|---|
 | **Init scripts** (`docker-entrypoint-initdb.d/`) | Solo cuando el volumen es NUEVO | Crear roles, schemas, extensiones |
-| **Migraciones** (`supabase/migrations/`) | Manualmente después del `up` | Crear tablas, policies, triggers |
-| **Seed** (`supabase/seed.sql`) | Manualmente después de migraciones | Datos de prueba para dev |
+| **Migraciones Drizzle** (`backend/drizzle/`) | Manualmente después del `up` | DDL de tablas (generado) + RLS policies (SQL custom) |
+| **Seed** (`backend/seed.sql` o script) | Manualmente después de migraciones | Datos de prueba para dev |
 
 ```bash
 # Flujo completo desde cero:
 docker compose up -d                    # 1. Levanta todo (init scripts corren)
-./apply-migrations.sh                   # 2. Aplica migraciones
-psql < supabase/seed.sql               # 3. Seed de datos
-npm run dev                             # 4. Frontend
+pnpm --filter backend run db:migrate    # 2. Aplica migraciones Drizzle + RLS
+pnpm --filter backend run db:seed       # 3. Seed de datos (si existe)
+pnpm run dev                            # 4. Frontend + backend
 ```
 
 ---
@@ -128,8 +138,13 @@ npm run dev                             # 4. Frontend
 ```
 # Producción: dominio con HTTPS automático
 app.midominio.com {
-    # API requests → Kong
+    # API requests → Hono backend
     handle /api/* {
+        reverse_proxy backend:8081
+    }
+
+    # Auth / Realtime / Storage → Kong (Supabase)
+    handle /auth/* /realtime/* /storage/* {
         reverse_proxy supabase-kong:8000
     }
     
