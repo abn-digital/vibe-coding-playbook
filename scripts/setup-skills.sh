@@ -8,10 +8,9 @@ npx skills@latest add shadcn/improve -y
 npx skills@latest add GoogleChrome/modern-web-guidance -y
 npx skills@latest add mattpocock/skills -y --skill grill-me grilling grill-with-docs
 
-# Junction .claude/skills -> .agents/skills (macOS/Linux)
-if [ ! -e .claude/skills ]; then
-  mkdir -p .claude
-  ln -s ../.agents/skills .claude/skills
-fi
+# .agents/skills is the source of truth; .claude/skills is a relative symlink
+# (industry convention - the symlink is committed, so this just refreshes it).
+mkdir -p .claude
+ln -sfn ../.agents/skills .claude/skills
 
 echo "Skills installed."
