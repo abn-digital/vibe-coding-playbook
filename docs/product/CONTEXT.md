@@ -25,7 +25,7 @@ The Docker logging driver that ships container stdout/stderr to Google Cloud Log
 _Avoid_: json-file (in production), fluentd
 
 **Terraform**:
-The only approved tool for provisioning GCP resources - compute, networking, monitoring, and alert policies. Slack channels are discovered from existing GCP state before creating new ones.
+The only approved tool for provisioning GCP resources - compute, networking, monitoring, alert policies, and Workload Identity Federation for CI. Slack channels are discovered from existing GCP state before creating new ones.
 _Avoid_: gcloud one-offs, click-ops, manual console setup
 
 **Environment**:

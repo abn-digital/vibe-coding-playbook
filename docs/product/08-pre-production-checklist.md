@@ -85,7 +85,9 @@
 ### CI/CD
 - [ ] **GitHub Actions** configurado (lint + build + deploy en merge a master)
 - [ ] **Preview deploys** en PRs via verify job (typecheck, lint, build, cerbos compile) - deploy solo a VM en merge
-- [ ] **Secrets de CI** configurados en GitHub (VM SSH key, host, etc.)
+- [ ] **WIF configurado** - pool + provider en Terraform; GitHub vars (`GCP_WIF_PROVIDER`, `GCP_DEPLOY_SA`, `GCE_INSTANCE`, `GCE_ZONE`)
+- [ ] **OS Login** habilitado en la VM de producto (deploy sin SSH private key en secrets)
+- [ ] **Sin JSON keys** de service account en GitHub Secrets salvo excepción documentada (MADR)
 
 ---
 

@@ -37,6 +37,10 @@ variable "create_slack_channel" {
 
 Set `create_slack_channel = true` only on first-time org setup, or `terraform import` an existing channel.
 
+## CI: Workload Identity Federation
+
+For GitHub Actions that touch GCP (deploy, Firebase preview, Terraform), provision a WIF pool + OIDC provider and a deploy service account in Terraform. Authenticate with `google-github-actions/auth` and `permissions: id-token: write`. Avoid committing or storing long-lived service account JSON keys in GitHub Secrets when WIF applies.
+
 ## Template
 
 See [template/terraform/](../../template/terraform/) - `modules/monitoring` and `environments/poc/`.

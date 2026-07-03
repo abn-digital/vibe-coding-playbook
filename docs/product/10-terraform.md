@@ -22,3 +22,13 @@ Use `template/terraform/environments/product/`:
 ## Slack channels
 
 Lookup existing channel first (`create_slack_channel = false`). See [vibe-coding terraform doc](../vibe-coding/10-terraform.md).
+
+## CI: Workload Identity Federation
+
+Provision in the same Terraform environment:
+
+- `google_iam_workload_identity_pool` + GitHub OIDC provider (`attribute.repository`)
+- Deploy service account with `roles/iam.workloadIdentityUser` binding for the pool
+- VM: enable OS Login (`enable-oslogin=TRUE` metadata) so CI deploys without a static SSH key
+
+Wire GitHub Actions vars: `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SA`, `GCP_PROJECT`, `GCE_INSTANCE`, `GCE_ZONE`.

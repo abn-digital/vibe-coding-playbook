@@ -26,4 +26,5 @@
 - **Infrastructure as code**: All GCP resources provisioned with **Terraform** - compute, monitoring, uptime checks, alert policies. **Slack notification channels: look up existing channels via Terraform data sources first**; create only when none exists.
 - **Terraform state**: GCS backend - one org bucket, **separate prefix per environment** (e.g. `poc/my-app`, `product/my-app`). Each `terraform/environments/*/` directory owns its own backend config and provisioning.
 - **Terraform workflow**: Always `terraform plan` before `terraform apply` - review drift and unexpected changes; never apply without a reviewed plan.
+- **CI auth**: Prefer GitHub Actions **Workload Identity Federation** to GCP over long-lived keys in secrets. Provision WIF in Terraform.
 - **Alerting**: Tier 1 only - uptime failure, Cloud Run 5xx (POC), VM down (product), disk > 85%, memory > 90%. All notifications to a **Slack channel** (no paging/SMS).

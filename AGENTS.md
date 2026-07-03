@@ -102,6 +102,13 @@ Project-local skills live in `.agents/skills/` (symlinked to `.claude/skills/`).
 - GCS backend: one org bucket, prefix per environment (`poc/`, `product/`).
 - Slack notification channels: **lookup existing via data source first**; create only when missing.
 
+### CI/CD (GitHub Actions)
+
+- Prefer **Workload Identity Federation** (GitHub OIDC → GCP) over long-lived service account JSON keys or SSH private keys in GitHub Secrets.
+- Provision the WIF pool, provider, and deploy service account in Terraform. Authenticate with `google-github-actions/auth` + `permissions: id-token: write`.
+- Deploy to the product VM via `gcloud compute ssh` with **OS Login** - no static SSH key in secrets when OS Login is enabled.
+- Use GitHub **vars** for non-secret config (`GCP_PROJECT`, `GCE_INSTANCE`, `GCE_ZONE`, `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SA`). Reserve **secrets** for integrations WIF cannot cover.
+
 ### Observability
 
 - Local Docker: `json-file` logs.

@@ -148,20 +148,29 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
-      - run: pnpm install && pnpm run build
-      - name: Deploy to self-hosted VM
-        uses: appleboy/ssh-action@v1
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          script: |
-            cd /opt/app
-            git pull
-            docker compose up -d --build
-            pnpm --filter backend run db:migrate
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install && pnpm run build
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - name: Deploy on GCE VM (WIF + OS Login)
+        run: |
+          gcloud compute ssh ${{ vars.GCE_INSTANCE }} \
+            --zone=${{ vars.GCE_ZONE }} \
+            --project=${{ vars.GCP_PROJECT }} \
+            --command="cd /opt/app && git pull && docker compose up -d --build && pnpm --filter backend run db:migrate"
 ```
 
 ### Qué corre en cada etapa
@@ -171,7 +180,7 @@ Push a master/PR:
   ├── lint-and-typecheck   (ESLint + TypeScript)
   ├── test-policies        (cerbos compile)
   └── build                (pnpm run build)
-        └── deploy         (SSH a VM self-hosted, solo en merge a master)
+        └── deploy         (WIF → gcloud compute ssh + OS Login, solo en merge a master)
 ```
 
 ---

@@ -191,7 +191,7 @@ proyecto/
 
 1. **`.env` NUNCA va a git** - está en `.gitignore`
 2. **`.env.example` SIEMPRE va a git** - con placeholders
-3. **Secrets van en el server**, no en CI - usa GitHub Secrets para Actions
+3. **CI auth:** preferí **Workload Identity Federation** (GitHub OIDC → GCP) sobre JSON keys o SSH private keys en secrets. Usá GitHub **vars** para config no sensible (project, zone, instance, WIF provider path).
 4. **`VITE_*` prefixed vars** son las únicas que llegan al browser - cuidado con lo que exponés
 
 ```bash
@@ -210,6 +210,23 @@ ANALYTICS_INTERNAL_TOKEN=abc...   # Credenciales de servicio interno en Docker
 
 Product deploys to **your GCE VM** - not Firebase Hosting, not supabase.com.
 
+### CI auth: Workload Identity Federation (preferido)
+
+Autenticá GitHub Actions a GCP con **OIDC + Workload Identity Federation** - sin JSON keys ni SSH private keys en secrets cuando es viable.
+
+| Enfoque | Cuándo |
+|---|---|
+| **WIF + `gcloud compute ssh` + OS Login** ✅ | Product deploy a GCE VM (default) |
+| **WIF + `google-github-actions/auth`** | Cualquier step que llame APIs de GCP (Artifact Registry, Cloud Run deploy en POC, etc.) |
+| **GitHub Secret (JSON key / SSH key)** | Solo si WIF no aplica - documentá el porqué en un MADR |
+
+Provisioná en Terraform: `google_iam_workload_identity_pool`, provider para `token.actions.githubusercontent.com`, service account de deploy con `roles/compute.osAdminLogin` (o más acotado) + binding `workloadIdentityUser`.
+
+GitHub repo settings:
+
+- **Vars:** `GCP_PROJECT`, `GCE_INSTANCE`, `GCE_ZONE`, `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SA`
+- **Secrets:** evitá keys estáticas; `FIREBASE_API_KEY` en POC rules tests es público (web config)
+
 ### Deploy automático en merge a main/master
 
 ```yaml
@@ -217,24 +234,34 @@ name: Deploy on merge
 on:
   push:
     branches: [master]
+
+permissions:
+  id-token: write   # required for WIF
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pnpm install && pnpm run build
-      - name: Deploy to VM
-        uses: appleboy/ssh-action@v1
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          script: |
-            cd /opt/app
-            git pull
-            docker compose pull
-            docker compose up -d --build
-            pnpm --filter backend run db:migrate
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install && pnpm run build
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - name: Deploy on GCE VM (OS Login - no SSH key secret)
+        run: |
+          gcloud compute ssh ${{ vars.GCE_INSTANCE }} \
+            --zone=${{ vars.GCE_ZONE }} \
+            --project=${{ vars.GCP_PROJECT }} \
+            --command="cd /opt/app && git pull && docker compose up -d --build && pnpm --filter backend run db:migrate"
 ```
 
 ### Verify en Pull Requests (sin deploy)
