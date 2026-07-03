@@ -18,7 +18,7 @@ Check model availability before triggering a download:
 ```javascript
 const availability = await LanguageModel.availability();
 
-// Do not call create() when unavailable — the model cannot run on this device.
+// Do not call create() when unavailable - the model cannot run on this device.
 if (availability !== 'unavailable') {
 	const session = await LanguageModel.create({
 		monitor(m) {
@@ -44,9 +44,9 @@ For short responses, use `prompt()`. For longer content, use `promptStreaming()`
 ```javascript
 const session = await LanguageModel.create();
 
-// prompt() accumulates the full response before resolving — use for short, one-shot output.
+// prompt() accumulates the full response before resolving - use for short, one-shot output.
 const result = await session.prompt('Write a haiku about coding.');
-// textContent, not innerHTML — model output is untrusted and must not be parsed as markup.
+// textContent, not innerHTML - model output is untrusted and must not be parsed as markup.
 outputEl.textContent = result;
 
 // promptStreaming() yields independent chunks that must be concatenated;
@@ -101,7 +101,7 @@ const mainSession = await LanguageModel.create({
 
 const branchA = await mainSession.clone();
 const branchB = await mainSession.clone();
-// Destroy the base after cloning — the clones own their own context from here.
+// Destroy the base after cloning - the clones own their own context from here.
 mainSession.destroy();
 ```
 
@@ -109,7 +109,7 @@ mainSession.destroy();
 
 While a native "restore" feature is in development, you can recreate a session by feeding previous history into `initialPrompts`.
 
-**Note**: `localStorage` is unencrypted and persistent. Stored conversation history may include user PII — consider the privacy implications before persisting chat history.
+**Note**: `localStorage` is unencrypted and persistent. Stored conversation history may include user PII - consider the privacy implications before persisting chat history.
 
 ```javascript
 // || '[]' ensures JSON.parse never receives null when the key doesn't exist yet.
@@ -126,7 +126,7 @@ To prevent the model from adding "chatter" (e.g., "Sure, here is your JSON:"), u
 ### Example: Sentiment Classification
 
 ```javascript
-// Pass the schema as a plain object — do not JSON.stringify() it first.
+// Pass the schema as a plain object - do not JSON.stringify() it first.
 const schema = {
 	type: 'object',
 	properties: {

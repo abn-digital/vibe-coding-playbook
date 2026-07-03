@@ -13,7 +13,7 @@
 | **Type checking** | `tsc --noEmit` | Que el código compila sin errores | CI + pre-commit |
 | **Linting** | ESLint | Estilo de código consistente | CI + pre-commit |
 
-> **¿Por qué no unit tests?** Los hooks de Refine y los componentes de shadcn ya están testeados upstream. Nuestro valor está en los flujos E2E — que el usuario pueda loguearse, crear una tarea, y verla en la lista.
+> **¿Por qué no unit tests?** Los hooks de Refine y los componentes de shadcn ya están testeados upstream. Nuestro valor está en los flujos E2E - que el usuario pueda loguearse, crear una tarea, y verla en la lista.
 
 ---
 
@@ -52,7 +52,7 @@ cy.visit('/tasks');
 ### Selectores: `data-cy` (no texto)
 
 ```tsx
-// ❌ Frágil — el texto cambia con i18n
+// ❌ Frágil - el texto cambia con i18n
 cy.contains('Crear tarea').click();
 
 // ✅ Estable

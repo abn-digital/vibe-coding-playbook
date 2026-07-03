@@ -18,9 +18,9 @@
 
 ## Key Constraints
 
-- Popup closes when the user clicks outside it — don't rely on it staying open
+- Popup closes when the user clicks outside it - don't rely on it staying open
 - Default max size: 800x600 px. Set size via CSS on body/html
-- All scripts must be external files (CSP — no inline scripts)
+- All scripts must be external files (CSP - no inline scripts)
 - All event listeners must use `addEventListener` (no inline handlers)
 
 ## Popup HTML Template
@@ -81,7 +81,7 @@ If you want the action click to do something instead of showing a popup, remove
 `default_popup` and use `chrome.action.onClicked`:
 
 ```js
-// In service worker — only fires if NO popup is set
+// In service worker - only fires if NO popup is set
 chrome.action.onClicked.addListener((tab) => {
   // Open side panel, inject script, etc.
 });

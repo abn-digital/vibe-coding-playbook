@@ -19,11 +19,11 @@
 
 **¿Por qué no hacer todo a mano?** Porque en una plataforma con 19+ módulos CRUD, el 80% del código es repetitivo: listar datos, paginar, filtrar, crear, editar, borrar. Refine te da:
 
-- `useList()`, `useCreate()`, `useUpdate()`, `useDelete()` — conectados a Supabase
-- `authProvider` — login/logout/session refresh
-- `accessControlProvider` — integración con Cerbos
-- `auditLogProvider` — logging automático de cambios
-- `liveProvider` — Realtime via WebSockets
+- `useList()`, `useCreate()`, `useUpdate()`, `useDelete()` - conectados a Supabase
+- `authProvider` - login/logout/session refresh
+- `accessControlProvider` - integración con Cerbos
+- `auditLogProvider` - logging automático de cambios
+- `liveProvider` - Realtime via WebSockets
 
 ```tsx
 // Sin Refine: ~200 líneas de fetch, state, loading, error handling
@@ -110,10 +110,10 @@ resourcePolicy:
 ```
 
 **Ventajas:**
-- Las policies son YAML, no código — un no-programador las puede leer
-- Versionadas en Git — historial completo de cambios de permisos
-- Hot-reload — cambiar un YAML actualiza los permisos sin redeploy
-- Testeable — `cerbos compile` valida las policies antes del deploy
+- Las policies son YAML, no código - un no-programador las puede leer
+- Versionadas en Git - historial completo de cambios de permisos
+- Hot-reload - cambiar un YAML actualiza los permisos sin redeploy
+- Testeable - `cerbos compile` valida las policies antes del deploy
 
 ---
 

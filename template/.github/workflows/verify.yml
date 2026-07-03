@@ -20,6 +20,10 @@ jobs:
       - run: pnpm run typecheck
       - run: pnpm run lint
       - run: pnpm run test
+      - name: Firestore rules tests (real project - skips if secret unset)
+        run: pnpm --filter backend run test:rules
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
 
   docker-smoke:
     runs-on: ubuntu-latest

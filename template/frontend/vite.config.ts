@@ -11,5 +11,12 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
+    proxy: {
+      // Same-origin /api like Firebase Hosting's rewrite in prod.
+      "/api": {
+        target: process.env.API_PROXY_TARGET ?? "http://localhost:8081",
+        changeOrigin: true,
+      },
+    },
   },
 });

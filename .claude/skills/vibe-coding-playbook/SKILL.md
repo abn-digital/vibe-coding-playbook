@@ -5,7 +5,7 @@ description: Conventions for vibe-coding POC projects scaffolded from this playb
 
 # Vibe-Coding Playbook (project skill)
 
-Read `AGENTS.md` at the playbook repo root (or the copied project's root after you add these rules).
+Read `AGENTS.md` at the playbook repo root (POC repos copied from `template/` ship their own).
 
 ## Before writing code
 
@@ -15,7 +15,7 @@ Read `AGENTS.md` at the playbook repo root (or the copied project's root after y
 ## Before committing
 
 1. Re-read **ponytail** and **modern-web-guidance**.
-2. Run: `npm run typecheck && npm run lint && npm run test`.
+2. Run: `pnpm run typecheck && pnpm run lint && pnpm run test && pnpm --filter backend run test:rules`.
 3. Run Docker smoke if infrastructure changed.
 
 ## Deviations from playbook

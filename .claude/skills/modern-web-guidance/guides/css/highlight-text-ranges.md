@@ -10,7 +10,7 @@ Use a `TreeWalker` to collect all text nodes in the target element, then create 
 ```javascript
 const article = document.querySelector("article");
 
-// MANDATORY: Use TreeWalker to collect text nodes — do not manipulate innerHTML.
+// MANDATORY: Use TreeWalker to collect text nodes - do not manipulate innerHTML.
 const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
 const allTextNodes = [];
 let currentNode = treeWalker.nextNode();

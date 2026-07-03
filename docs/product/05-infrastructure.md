@@ -59,7 +59,7 @@ docker compose -f docker/docker-compose.yml down -v
 
 ```yaml
 services:
-  # Base de datos — SIEMPRE primero, con healthcheck
+  # Base de datos - SIEMPRE primero, con healthcheck
   supabase-db:
     image: supabase/postgres:15.x
     healthcheck:
@@ -76,7 +76,7 @@ services:
       supabase-db:
         condition: service_healthy   # ← Espera a que la DB esté lista
   
-  # API Gateway — depende de los servicios
+  # API Gateway - depende de los servicios
   supabase-kong:
     depends_on:
       - supabase-auth
@@ -84,7 +84,7 @@ services:
       - supabase-realtime
       - supabase-storage
   
-  # Reverse proxy — depende del gateway
+  # Reverse proxy - depende del gateway
   caddy:
     depends_on:
       - supabase-kong
@@ -174,10 +174,10 @@ proyecto/
 
 ### Reglas
 
-1. **`.env` NUNCA va a git** — está en `.gitignore`
-2. **`.env.example` SIEMPRE va a git** — con placeholders
-3. **Secrets van en el server**, no en CI — usa GitHub Secrets para Actions
-4. **`VITE_*` prefixed vars** son las únicas que llegan al browser — cuidado con lo que exponés
+1. **`.env` NUNCA va a git** - está en `.gitignore`
+2. **`.env.example` SIEMPRE va a git** - con placeholders
+3. **Secrets van en el server**, no en CI - usa GitHub Secrets para Actions
+4. **`VITE_*` prefixed vars** son las únicas que llegan al browser - cuidado con lo que exponés
 
 ```bash
 # ✅ Seguro en VITE_ (público)

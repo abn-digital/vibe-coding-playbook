@@ -95,7 +95,7 @@ The extension ID changes depending on how you load the extension:
 
 | Context | How ID is determined |
 |---------|---------------------|
-| Unpacked (development) | Derived from the extension's directory path — changes if you move the folder |
+| Unpacked (development) | Derived from the extension's directory path - changes if you move the folder |
 | Packed (.crx) | Derived from the private key used to pack |
 | Chrome Web Store | Assigned by the store, permanent |
 

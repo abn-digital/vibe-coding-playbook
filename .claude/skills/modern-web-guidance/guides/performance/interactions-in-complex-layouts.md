@@ -4,7 +4,7 @@ Maintain high frame rates (60FPS) and eliminate interaction latency during drag-
 
 ## Overview
 
-In complex layouts, performing a minor change to a single item—such as dragging a card or editing a cell—can trigger a chain reaction of style and layout calculations that forces the browser to reflow the entire page. This results in dropped frames and high Interaction to Next Paint (INP) latency.
+In complex layouts, performing a minor change to a single item-such as dragging a card or editing a cell-can trigger a chain reaction of style and layout calculations that forces the browser to reflow the entire page. This results in dropped frames and high Interaction to Next Paint (INP) latency.
 
 By applying `content-visibility: auto` to self-contained layout regions (like columns in a Kanban board), you can isolate rendering work.
 

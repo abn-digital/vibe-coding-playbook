@@ -1,6 +1,6 @@
 # Defer Work Until Scroll Ends
 
-Scrolling on the web should be smooth and responsive. Executing heavy tasks—such as layout recalculations, analytics data beacons tracking, or dynamic DOM updates—during scrolling can saturate the main thread, resulting in dropped frames and layout thrashing.
+Scrolling on the web should be smooth and responsive. Executing heavy tasks-such as layout recalculations, analytics data beacons tracking, or dynamic DOM updates-during scrolling can saturate the main thread, resulting in dropped frames and layout thrashing.
 
 Historically, developers have relied on debouncing the `scroll` event using `setTimeout()` to guess when a scroll is finished. However, these debounced functions are notoriously unreliable. They may trigger while the user’s is still scrolling.
 

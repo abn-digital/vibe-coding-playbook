@@ -2,11 +2,11 @@
 
 ## The Problem
 
-Cross-document view transitions animate elements between two pages during a same-origin navigation. The browser captures a snapshot of the old page, navigates, then animates from the snapshot to the new page. If the new page has not finished loading critical resources — stylesheets, layout scripts, or key DOM elements — the transition animates to an incomplete or unstyled state. This causes visual glitches such as elements morphing to wrong positions, content reflowing mid-animation, or fallback fonts flashing to web fonts after the transition completes.
+Cross-document view transitions animate elements between two pages during a same-origin navigation. The browser captures a snapshot of the old page, navigates, then animates from the snapshot to the new page. If the new page has not finished loading critical resources - stylesheets, layout scripts, or key DOM elements - the transition animates to an incomplete or unstyled state. This causes visual glitches such as elements morphing to wrong positions, content reflowing mid-animation, or fallback fonts flashing to web fonts after the transition completes.
 
 ## The Solution
 
-Use `blocking="render"` on critical `<link>` and `<script>` elements in the new page's `<head>`, and use `<link rel="expect">` to block rendering until specific DOM elements have been parsed. This ensures the browser does not begin the view transition animation until the new page's visual state is stable. The browser continues parsing the HTML in the background — only painting is deferred.
+Use `blocking="render"` on critical `<link>` and `<script>` elements in the new page's `<head>`, and use `<link rel="expect">` to block rendering until specific DOM elements have been parsed. This ensures the browser does not begin the view transition animation until the new page's visual state is stable. The browser continues parsing the HTML in the background - only painting is deferred.
 
 ### Implementation Strategy
 
@@ -61,7 +61,7 @@ If a non-blocking script in the `<head>` must run before the transition animates
 
 ### Step 3: Block Rendering Until Key DOM Elements Are Parsed
 
-Stylesheets and `blocking="render"` scripts in the `<head>` only guarantee that the `<head>` has been fully processed. They do **not** wait for any `<body>` content to be parsed. Without additional blocking, the browser may take the new-page snapshot before above-the-fold elements exist in the DOM — resulting in a transition that animates to a blank or partially rendered page.
+Stylesheets and `blocking="render"` scripts in the `<head>` only guarantee that the `<head>` has been fully processed. They do **not** wait for any `<body>` content to be parsed. Without additional blocking, the browser may take the new-page snapshot before above-the-fold elements exist in the DOM - resulting in a transition that animates to a blank or partially rendered page.
 
 `<link rel="expect">` solves this by blocking rendering until a specific element (identified by its `id`) has been parsed. The `href` value must be a fragment identifier (e.g., `#hero`) matching the target element's `id` attribute. Once that element's closing tag is parsed, the render block is released.
 
@@ -96,7 +96,7 @@ Even when no individual elements have a `view-transition-name`, the default `roo
 
 #### Use Case 2: Morph Animations Between Specific Elements
 
-When elements on both pages share a `view-transition-name`, the browser morphs them smoothly across the navigation. If the target element has not been parsed when the transition starts, the browser cannot find it — the morph degrades to separate exit and entry animations. Block rendering until the element with the `view-transition-name` has been parsed.
+When elements on both pages share a `view-transition-name`, the browser morphs them smoothly across the navigation. If the target element has not been parsed when the transition starts, the browser cannot find it - the morph degrades to separate exit and entry animations. Block rendering until the element with the `view-transition-name` has been parsed.
 
 ```html
 <head>
@@ -114,7 +114,7 @@ When elements on both pages share a `view-transition-name`, the browser morphs t
     When multiple blocking="render" resources are present,
     rendering is blocked until ALL of them are satisfied.
     Here, the browser waits for both the script to execute
-    AND the #hero element to be parsed — whichever comes last.
+    AND the #hero element to be parsed - whichever comes last.
   -->
   <script async blocking="render" src="/js/transition-setup.js"></script>
 </head>
@@ -156,7 +156,7 @@ Different viewport sizes may show different amounts of content above the fold. U
 
 ### Step 5: Use pagereveal for Context-Dependent Transitions (Optional)
 
-The `pagereveal` event is **not required** for the core render-blocking strategy. It is only needed when `view-transition-name` values must be assigned dynamically based on where the user navigated from — for example, morphing a specific list item to a detail page heading.
+The `pagereveal` event is **not required** for the core render-blocking strategy. It is only needed when `view-transition-name` values must be assigned dynamically based on where the user navigated from - for example, morphing a specific list item to a detail page heading.
 
 If `view-transition-name` values are assigned statically in CSS, or if you are only using the default full-page cross-fade, skip this step entirely.
 

@@ -347,7 +347,7 @@ function setupList(list) {
   }
 
   // Pick up items added later (initial render after data loads, infinite
-  // scroll, server push). Removals don't need MutationObserver handling —
+  // scroll, server push). Removals don't need MutationObserver handling -
   // the commit branch above already unobserves the item before removing it
   // from the DOM.
   new MutationObserver((mutations) => {
@@ -377,7 +377,7 @@ The scroll/snap/observation mechanics are unchanged.
 
 #### Different actions per swipe direction
 
-A single row can also expose **two different actions**: one for a left swipe and one for a right swipe (e.g., "archive" on right, "delete" on left), the way many native mail apps do it. The scroll, snap, and commit-detection mechanics don't change at all — the only thing that changes is what happens at commit time.
+A single row can also expose **two different actions**: one for a left swipe and one for a right swipe (e.g., "archive" on right, "delete" on left), the way many native mail apps do it. The scroll, snap, and commit-detection mechanics don't change at all - the only thing that changes is what happens at commit time.
 
 In Step 4, the commit branch always calls `removeItem(...)`. To support two actions, pick the handler based on `direction`:
 
@@ -391,7 +391,7 @@ if (ratio < commitThreshold) {
 }
 ```
 
-A note on naming: `removeItem` is named for the destructive case, but the function it runs (collapse the row's height, slide the content off-screen, then drop the node) is really a generic "this row is done, animate it away" routine. It works just as well for archive, mark-as-read, or snooze — the row goes away from *this* list either way. If your handlers don't actually remove anything (e.g., both move the item elsewhere), rename it to something neutral like `dismissItem` so the code reads correctly.
+A note on naming: `removeItem` is named for the destructive case, but the function it runs (collapse the row's height, slide the content off-screen, then drop the node) is really a generic "this row is done, animate it away" routine. It works just as well for archive, mark-as-read, or snooze - the row goes away from *this* list either way. If your handlers don't actually remove anything (e.g., both move the item elsewhere), rename it to something neutral like `dismissItem` so the code reads correctly.
 
 To make the two actions visually distinct, hoist a color and icon for each direction onto the list item, then paint the track with a split gradient and the two pseudo-element icons from the same variables.
 
@@ -491,7 +491,7 @@ function setupItem(item) {
 
 Driving setup from the outer viewport observer (Step 4) is what makes this reliable: `setupItem` runs after the item is rendered, so `track.clientWidth` returns a real value rather than `0`.
 
-Some browsers (notably Safari) also reset the snap-container scroll position whenever the track resizes (URL-bar show/hide, viewport resize, container queries, etc.). Use a `ResizeObserver` on each track to re-apply the scroll. Gate it behind the same `CSS.supports` check — when `scroll-initial-target` is supported, the browser handles resize-time scroll restoration itself.
+Some browsers (notably Safari) also reset the snap-container scroll position whenever the track resizes (URL-bar show/hide, viewport resize, container queries, etc.). Use a `ResizeObserver` on each track to re-apply the scroll. Gate it behind the same `CSS.supports` check - when `scroll-initial-target` is supported, the browser handles resize-time scroll restoration itself.
 
 ```js
 const trackResizeObserver = needsScrollWorkaround

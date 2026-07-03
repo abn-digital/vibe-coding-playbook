@@ -90,7 +90,7 @@ When using the `scroll()` function to create a scroll-driven animation:
 As for this use case specifically:
 
 - The element that you animate **MUST** not be `position: static` or `position: relative` when using percentages in the `animation-range`.
-  - This is because those elements are considered “in-flow”. Shrinking those elements as you scroll, would shrink the total scroll distance, thereby affecting the computed value of — for example — `10%` into the scroll.
+  - This is because those elements are considered “in-flow”. Shrinking those elements as you scroll, would shrink the total scroll distance, thereby affecting the computed value of - for example - `10%` into the scroll.
 
 ## Browser support and fallback strategies
 

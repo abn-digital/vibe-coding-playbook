@@ -17,7 +17,7 @@ Firestore Security Rules and Storage Rules are the only client-facing authorizat
 _Avoid_: App-level auth checks only
 
 **GCP dev project**:
-Local development uses the shared **hike-agentic-playground** Firebase/GCP project. Docker mounts ADC credentials — no emulators.
+Local development uses the shared **hike-agentic-playground** Firebase/GCP project. Docker mounts ADC credentials - no emulators.
 _Avoid_: Emulator-first, demo project, production Firebase for experiments
 
 **Anonymous user**:

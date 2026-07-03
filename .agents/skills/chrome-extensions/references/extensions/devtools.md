@@ -8,7 +8,7 @@
 }
 ```
 
-The devtools page runs ONLY when DevTools is open. It's invisible — its job is to create panels.
+The devtools page runs ONLY when DevTools is open. It's invisible - its job is to create panels.
 
 ## Creating a Panel
 
@@ -27,7 +27,7 @@ The devtools page runs ONLY when DevTools is open. It's invisible — its job is
 chrome.devtools.panels.create(
   'My Panel',                    // Title shown in DevTools tab
   'icons/icon-16.png',           // Icon (optional, can be empty string)
-  'devtools/panel/panel.html',   // Panel content page — RELATIVE TO EXTENSION ROOT
+  'devtools/panel/panel.html',   // Panel content page - RELATIVE TO EXTENSION ROOT
   (panel) => {
     // panel.onShown.addListener((window) => { ... });
     // panel.onHidden.addListener(() => { ... });
@@ -39,10 +39,10 @@ chrome.devtools.panels.create(
 file. This is the most common DevTools extension bug.
 
 ```js
-// ❌ WRONG — resolves to <ext-root>/panel/panel.html (file not found)
+// ❌ WRONG - resolves to <ext-root>/panel/panel.html (file not found)
 chrome.devtools.panels.create("My Panel", "", "panel/panel.html");
 
-// ✅ CORRECT — resolves to <ext-root>/devtools/panel/panel.html
+// ✅ CORRECT - resolves to <ext-root>/devtools/panel/panel.html
 chrome.devtools.panels.create("My Panel", "", "devtools/panel/panel.html");
 ```
 
@@ -81,7 +81,7 @@ DevTools pages/panels CANNOT directly talk to the service worker via `chrome.run
 in all cases. Use a connection pattern:
 
 ```js
-// In panel JS — connect to service worker
+// In panel JS - connect to service worker
 const port = chrome.runtime.connect({ name: 'devtools-panel' });
 port.postMessage({ type: 'INIT', tabId: chrome.devtools.inspectedWindow.tabId });
 port.onMessage.addListener((msg) => { /* handle */ });

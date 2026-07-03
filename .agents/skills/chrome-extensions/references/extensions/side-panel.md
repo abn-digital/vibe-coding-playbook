@@ -12,7 +12,7 @@ Add to manifest.json:
 }
 ```
 
-## Opening the Side Panel — REQUIRED
+## Opening the Side Panel - REQUIRED
 
 **A side panel definition alone does NOT make it openable.** You MUST provide an explicit
 trigger to open it. Without one of these, users have no way to access the panel:
@@ -67,10 +67,10 @@ as a one-liner instead of an `onClicked` listener:
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
 ```
 
-⚠️ **The property is `openPanelOnActionClick` — NOT `openPanelOnActionIconClick`.**
+⚠️ **The property is `openPanelOnActionClick` - NOT `openPanelOnActionIconClick`.**
 Using the wrong name causes a synchronous TypeError that silently aborts the service worker.
 
-When using `setPanelBehavior`, do NOT also define `default_popup` — the popup takes priority.
+When using `setPanelBehavior`, do NOT also define `default_popup` - the popup takes priority.
 
 ## Setting Panel Per-Tab
 
@@ -123,7 +123,7 @@ const [{ result }] = await chrome.scripting.executeScript({
 
 ## Important Notes
 
-- The side panel shares a single instance per window — opening it replaces existing content
+- The side panel shares a single instance per window - opening it replaces existing content
 - Use `chrome.sidePanel.setOptions({ enabled: false })` to disable for specific tabs
 - Side panel HTML files have full access to chrome.* APIs
 - The side panel persists across tab switches (per-window)

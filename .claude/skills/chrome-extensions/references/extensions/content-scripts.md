@@ -101,7 +101,7 @@ async function highlightEmails(elements) {
 - Namespace your CSS classes to avoid conflicts (e.g., `myext-highlight`)
 - Use Shadow DOM for complex UI injected into pages
 - Clean up on removal: `chrome.runtime.onMessage` listeners persist until the content script context is destroyed
-- Use `TreeWalker` or `document.createNodeIterator` instead of regex on `innerHTML` for finding text in the DOM — this is more reliable and doesn't break event listeners
+- Use `TreeWalker` or `document.createNodeIterator` instead of regex on `innerHTML` for finding text in the DOM - this is more reliable and doesn't break event listeners
 
 ## `run_at` Timing
 

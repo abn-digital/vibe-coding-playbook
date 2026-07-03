@@ -6,7 +6,7 @@ Client-side A/B testing tools work by loading a script that modifies the DOM aft
 
 ## The Solution
 
-The `blocking=render` attribute allows a `<script>` or `<link>` element placed in the `<head>` to block rendering—but not parsing—until the resource has been fetched and executed. This gives experimentation scripts the same render-blocking behavior that stylesheets have by default, ensuring the browser never paints the page until the experiment variant has been applied. No opacity hacks, no arbitrary timeouts, and no flicker.
+The `blocking=render` attribute allows a `<script>` or `<link>` element placed in the `<head>` to block rendering-but not parsing-until the resource has been fetched and executed. This gives experimentation scripts the same render-blocking behavior that stylesheets have by default, ensuring the browser never paints the page until the experiment variant has been applied. No opacity hacks, no arbitrary timeouts, and no flicker.
 
 ### Implementation Strategy
 

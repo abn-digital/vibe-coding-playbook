@@ -37,7 +37,7 @@ document.getElementById('btn').addEventListener('click', () => {
 
 If you need to execute arbitrary code (e.g., a CodePen-like playground), you MUST use one of these
 approaches. **Extension CSP completely blocks `eval()`, `new Function()`, and inline scripts in
-normal extension pages.** There is no way around this — you need sandboxing.
+normal extension pages.** There is no way around this - you need sandboxing.
 
 ### Option 1: Sandboxed Page in Manifest (Recommended)
 
@@ -61,7 +61,7 @@ Use an iframe in your extension page to embed the sandbox:
 
 **CRITICAL:** Communication between the extension page and the sandboxed iframe MUST use
 `postMessage`. You CANNOT access `iframe.contentDocument` or `iframe.contentWindow.document`
-directly — this will throw:
+directly - this will throw:
 
 ```
 SecurityError: Blocked a frame with origin "chrome-extension://..." from accessing a cross-origin frame.
@@ -70,7 +70,7 @@ SecurityError: Blocked a frame with origin "chrome-extension://..." from accessi
 Correct pattern:
 
 ```js
-// playground.js — send code to sandbox
+// playground.js - send code to sandbox
 const iframe = document.getElementById('preview');
 iframe.contentWindow.postMessage({
   html: htmlCode,
@@ -78,7 +78,7 @@ iframe.contentWindow.postMessage({
   js: jsCode
 }, '*');
 
-// sandbox.js — receive and execute
+// sandbox.js - receive and execute
 window.addEventListener('message', (event) => {
   const { html, css, js } = event.data;
   // Clear previous content
@@ -170,8 +170,8 @@ eval(userCode); // CSP blocks this
 
 Extension pages cannot load remote scripts by default. If you need external libraries:
 
-1. **Bundle them** — download and include in your extension
-2. **Use chrome.scripting to inject into web pages** — web pages have their own CSP
+1. **Bundle them** - download and include in your extension
+2. **Use chrome.scripting to inject into web pages** - web pages have their own CSP
 
 For content scripts injected into web pages, the web page's CSP does NOT apply to the
 content script's own code. Content scripts run in an isolated world.

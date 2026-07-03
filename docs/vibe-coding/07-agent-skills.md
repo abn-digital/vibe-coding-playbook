@@ -24,7 +24,7 @@ Project skill: `.agents/skills/vibe-coding-playbook/` (symlinked to `.claude/ski
 
 | Skill | Role |
 |---|---|
-| [grilling](https://github.com/mattpocock/skills) | Interview primitive — one question at a time |
+| [grilling](https://github.com/mattpocock/skills) | Interview primitive - one question at a time |
 | [grill-me](https://github.com/mattpocock/skills) | Stateless grill when there is no codebase yet |
 | [grill-with-docs](https://github.com/mattpocock/skills) | Grill with a codebase; write [MADR](../decisions/) for deviations |
 
@@ -32,7 +32,7 @@ Project skill: `.agents/skills/vibe-coding-playbook/` (symlinked to `.claude/ski
 
 | Skill | Role |
 |---|---|
-| [improve](https://github.com/shadcn/improve) | Mid-POC audit, pre-graduation — writes plans to `plans/`, never implements |
+| [improve](https://github.com/shadcn/improve) | Mid-POC audit, pre-graduation - writes plans to `plans/`, never implements |
 
 ## MADR for deviations
 

@@ -18,12 +18,12 @@ Sin esto, cualquier usuario autenticado ve todas las filas. **No hay excepción.
 ### 2. USING + WITH CHECK en policies de escritura
 
 ```sql
--- ❌ MAL — solo USING
+-- ❌ MAL - solo USING
 CREATE POLICY "tasks_write" ON tasks FOR ALL TO authenticated
     USING (tenant_id = private.get_my_tenant_id());
 -- Un usuario podría insertar filas en OTRO tenant
 
--- ✅ BIEN — USING + WITH CHECK
+-- ✅ BIEN - USING + WITH CHECK
 CREATE POLICY "tasks_write" ON tasks FOR ALL TO authenticated
     USING (tenant_id = private.get_my_tenant_id())
     WITH CHECK (tenant_id = private.get_my_tenant_id());
@@ -51,11 +51,11 @@ $$ LANGUAGE sql SECURITY DEFINER STABLE;
 ### 4. Nunca confíes en `app_metadata` del JWT
 
 ```sql
--- ❌ MAL — Google OAuth sobreescribe app_metadata
+-- ❌ MAL - Google OAuth sobreescribe app_metadata
 CREATE POLICY "by_role" ON tasks FOR ALL TO authenticated
     USING ((auth.jwt()->'app_metadata'->>'role') = 'admin');
 
--- ✅ BIEN — lee de la tabla profiles
+-- ✅ BIEN - lee de la tabla profiles
 CREATE POLICY "by_role" ON tasks FOR ALL TO authenticated
     USING (private.get_my_role() = 'admin');
 ```

@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm run typecheck)",
+      "Bash(pnpm run lint)",
+      "Bash(pnpm run test)",
+      "Bash(pnpm --filter backend run test:rules)",
+      "Bash(pnpm --filter backend run db:push)",
+      "Bash(terraform plan:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"console.log('Vibe-coding POC: re-read ponytail + modern-web-guidance before codegen; check docs/decisions/ for overrides; verify (typecheck/lint/test/test:rules) before commit.')\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/block-env-writes.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

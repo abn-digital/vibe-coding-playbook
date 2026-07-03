@@ -1,60 +1,58 @@
-import {
-  assertFails,
-  assertSucceeds,
-  initializeTestEnvironment,
-  type RulesTestEnvironment,
-} from "@firebase/rules-unit-testing";
-import { doc, setDoc } from "firebase/firestore";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { afterAll, beforeAll, describe, it } from "vitest";
+import { deleteApp, initializeApp, type FirebaseApp } from "firebase/app";
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { deleteDoc, doc, getFirestore, setDoc } from "firebase/firestore";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-const PROJECT_ID = "hike-agentic-playground";
-const runRulesTests =
-  process.env.RUN_FIRESTORE_RULES_TESTS === "true" &&
-  Boolean(process.env.FIRESTORE_EMULATOR_HOST);
+// No emulators in this playbook - these run against the REAL project's deployed
+// rules (deploy first: npx firebase-tools deploy --only firestore:rules).
+// Anonymous auth + one self-cleaning doc write keeps the footprint tiny.
+// Skips unless FIREBASE_API_KEY is set (the public web API key from compose.env).
+const apiKey = process.env.FIREBASE_API_KEY;
+const PROJECT_ID = process.env.VITE_FIREBASE_PROJECT_ID ?? "hike-agentic-playground";
+const TIMEOUT = 15_000;
 
-describe.skipIf(!runRulesTests)("firestore rules", () => {
-  let testEnv: RulesTestEnvironment;
+describe.skipIf(!apiKey)("firestore rules (real project)", () => {
+  let app: FirebaseApp;
+  let uid: string;
 
   beforeAll(async () => {
-    const [host, port] = process.env.FIRESTORE_EMULATOR_HOST!.split(":");
-    testEnv = await initializeTestEnvironment({
-      projectId: PROJECT_ID,
-      firestore: {
-        rules: readFileSync(resolve(import.meta.dirname, "firestore.rules"), "utf8"),
-        host,
-        port: Number(port),
-      },
-    });
-  });
+    app = initializeApp({ apiKey, projectId: PROJECT_ID });
+    const cred = await signInAnonymously(getAuth(app));
+    uid = cred.user.uid;
+  }, TIMEOUT);
 
   afterAll(async () => {
-    if (testEnv) {
-      await testEnv.cleanup();
-    }
+    await getAuth(app).currentUser?.delete();
+    await deleteApp(app);
   });
 
-  it("allows owner to write their user doc", async () => {
-    const ctx = testEnv.authenticatedContext("user1");
-    await assertSucceeds(
-      setDoc(doc(ctx.firestore(), "users/user1"), { name: "Ada" }),
-    );
-  });
+  it(
+    "allows owner to write their user doc",
+    async () => {
+      const ref = doc(getFirestore(app), `users/${uid}`);
+      await setDoc(ref, { rulesSmoke: true });
+      await deleteDoc(ref);
+    },
+    TIMEOUT,
+  );
 
-  it("denies anonymous write to emailGated collection", async () => {
-    const ctx = testEnv.authenticatedContext("anon1", { email: undefined });
-    await assertFails(
-      setDoc(doc(ctx.firestore(), "emailGated/doc1"), { secret: true }),
-    );
-  });
+  it(
+    "denies writing another user's doc",
+    async () => {
+      await expect(
+        setDoc(doc(getFirestore(app), "users/someone-else"), { x: 1 }),
+      ).rejects.toMatchObject({ code: "permission-denied" });
+    },
+    TIMEOUT,
+  );
 
-  it("allows Google user to write emailGated collection", async () => {
-    const ctx = testEnv.authenticatedContext("user2", {
-      email: "ada@example.com",
-    });
-    await assertSucceeds(
-      setDoc(doc(ctx.firestore(), "emailGated/doc1"), { secret: true }),
-    );
-  });
+  it(
+    "denies anonymous write to emailGated collection",
+    async () => {
+      await expect(
+        setDoc(doc(getFirestore(app), "emailGated/rules-smoke"), { x: 1 }),
+      ).rejects.toMatchObject({ code: "permission-denied" });
+    },
+    TIMEOUT,
+  );
 });

@@ -48,14 +48,14 @@
 - [ ] **Login** funciona (Google OAuth redirige y vuelve correctamente)
 - [ ] **Sidebar** muestra solo los módulos autorizados para el rol
 - [ ] **CRUD completo** funciona en al menos un módulo (crear, editar, listar, borrar)
-- [ ] **i18n** — no hay keys raw visibles (`common.title` en vez de "Título")
-- [ ] **Empty states** — las listas vacías muestran un placeholder, no blanco
-- [ ] **Error states** — las requests fallidas muestran un toast, no fallan silenciosamente
+- [ ] **i18n** - no hay keys raw visibles (`common.title` en vez de "Título")
+- [ ] **Empty states** - las listas vacías muestran un placeholder, no blanco
+- [ ] **Error states** - las requests fallidas muestran un toast, no fallan silenciosamente
 
 ### Multi-tenancy
-- [ ] **Aislamiento** — un usuario de tenant A NO ve datos de tenant B
-- [ ] **Theming** — cada tenant ve sus colores y logo
-- [ ] **Resolución de dominio** — `localhost` resuelve al tenant default
+- [ ] **Aislamiento** - un usuario de tenant A NO ve datos de tenant B
+- [ ] **Theming** - cada tenant ve sus colores y logo
+- [ ] **Resolución de dominio** - `localhost` resuelve al tenant default
 
 ---
 
@@ -89,12 +89,12 @@
 
 ## Testing
 
-- [ ] **Cypress E2E** — flujo de login funciona
-- [ ] **Cypress E2E** — CRUD completo en al menos un módulo
-- [ ] **Cypress E2E** — usuario con rol `client` no ve opciones de admin
-- [ ] **`cerbos compile`** — policies sin errores de sintaxis
-- [ ] **`tsc --noEmit`** — sin errores de tipos
-- [ ] **`npm run lint`** — sin errores de linting
+- [ ] **Cypress E2E** - flujo de login funciona
+- [ ] **Cypress E2E** - CRUD completo en al menos un módulo
+- [ ] **Cypress E2E** - usuario con rol `client` no ve opciones de admin
+- [ ] **`cerbos compile`** - policies sin errores de sintaxis
+- [ ] **`tsc --noEmit`** - sin errores de tipos
+- [ ] **`npm run lint`** - sin errores de linting
 
 ---
 
@@ -109,11 +109,11 @@
 
 ## Después del deploy
 
-- [ ] **Smoke test** — abrí la URL de producción, logueate, navegá los módulos
-- [ ] **Verificar HTTPS** — el candado verde está en el browser
-- [ ] **Verificar healthchecks** — `docker compose ps` muestra todos los servicios healthy
-- [ ] **Verificar logs** — no hay errores rojos en `docker compose logs`
-- [ ] **Probar desde otro browser/incógnito** — para descartar cache local
+- [ ] **Smoke test** - abrí la URL de producción, logueate, navegá los módulos
+- [ ] **Verificar HTTPS** - el candado verde está en el browser
+- [ ] **Verificar healthchecks** - `docker compose ps` muestra todos los servicios healthy
+- [ ] **Verificar logs** - no hay errores rojos en `docker compose logs`
+- [ ] **Probar desde otro browser/incógnito** - para descartar cache local
 
 ---
 

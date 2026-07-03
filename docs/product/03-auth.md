@@ -10,10 +10,10 @@
 
 | Método | Cuándo usarlo |
 |---|---|
-| **Google OAuth SSO** | Apps corporativas — todos usan Google Workspace |
+| **Google OAuth SSO** | Apps corporativas - todos usan Google Workspace |
 | **Microsoft OAuth** | Empresas con Office 365 |
 | **Magic Links** | Usuarios sin cuenta corporativa de Google/Microsoft |
-| **Email + Password** | Evitalo — el usuario tiene que inventar y recordar una contraseña |
+| **Email + Password** | Evitalo - el usuario tiene que inventar y recordar una contraseña |
 
 ### Implementación con Supabase GoTrue
 
@@ -27,9 +27,9 @@ await supabase.auth.signInWithOtp({ email: 'user@example.com' });
 
 ### Reglas de auth
 
-1. **No restringas por dominio en el OAuth** — cualquier email puede autenticarse. El tenant/rol se asigna después por la tabla `tenant_domains`.
-2. **Auto-provisioning** — un trigger en `auth.users` crea el perfil automáticamente al registrarse.
-3. **El JWT no es source of truth para roles** — Google OAuth sobreescribe `app_metadata`. Leé siempre el rol desde la tabla `profiles`.
+1. **No restringas por dominio en el OAuth** - cualquier email puede autenticarse. El tenant/rol se asigna después por la tabla `tenant_domains`.
+2. **Auto-provisioning** - un trigger en `auth.users` crea el perfil automáticamente al registrarse.
+3. **El JWT no es source of truth para roles** - Google OAuth sobreescribe `app_metadata`. Leé siempre el rol desde la tabla `profiles`.
 
 ---
 
@@ -43,21 +43,21 @@ await supabase.auth.signInWithOtp({ email: 'user@example.com' });
 │                                                         │
 │  Motor: Cerbos via HTTP desde el browser                │
 │  Qué hace: Oculta botones, menús y páginas              │
-│  ¿Seguro?: ❌ NO — es bypassable                       │
+│  ¿Seguro?: ❌ NO - es bypassable                       │
 │  Propósito: UX (no mostrar opciones que no podés usar)  │
 ├─────────────────────────────────────────────────────────┤
 │  CAPA 2: ROW LEVEL SECURITY (Server-side)               │
 │                                                         │
 │  Motor: PostgreSQL RLS                                  │
 │  Qué hace: Filtra datos a nivel de fila                 │
-│  ¿Seguro?: ✅ SÍ — no bypassable                      │
+│  ¿Seguro?: ✅ SÍ - no bypassable                      │
 │  Propósito: Seguridad REAL de datos                     │
 ├─────────────────────────────────────────────────────────┤
 │  CAPA 3: EDGE GATE (Server-side)                        │
 │                                                         │
 │  Motor: Cerbos en edge functions                        │
 │  Qué hace: Autoriza requests que NO pasan por Postgres  │
-│  ¿Seguro?: ✅ SÍ — server-side                        │
+│  ¿Seguro?: ✅ SÍ - server-side                        │
 │  Propósito: Proteger APIs externas (Cube, etc.)         │
 └─────────────────────────────────────────────────────────┘
 ```

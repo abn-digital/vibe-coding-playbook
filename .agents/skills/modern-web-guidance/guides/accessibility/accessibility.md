@@ -5,7 +5,7 @@ This guide provides actionable DOs and DON'Ts for AI coding agents to ensure web
 Keep these principles in mind throughout:
 
 - **Accessibility is the minimum, not the ceiling.** Conformance to standards is the floor; aim for genuine usability.
-- **Patterns are use-case specific.** No checklist replaces real testing — including testing with disabled users — to confirm a given implementation is actually accessible in context.
+- **Patterns are use-case specific.** No checklist replaces real testing - including testing with disabled users - to confirm a given implementation is actually accessible in context.
 
 ## 1. Content Navigability and Structure
 
@@ -23,7 +23,7 @@ Keep these principles in mind throughout:
 - **Don't place headings inside `<summary>`, and avoid relying on headings inside `<details>` content**: Headings inside `<summary>` may be hidden from screen-reader heading lists and heading-navigation shortcuts entirely; headings inside `<details>` content are only reachable via heading navigation when the disclosure is open.
   - **Caveat**: If a heading must act as a disclosure trigger, use a more robust alternative to `<details>`/`<summary>` instead, e.g. an accordion or a disclosure implemented with ARIA where the heading wraps the button.
 - **Don't use tables for layout**: Use CSS Grid/Flexbox for visual layouts.
-- **Don't overuse landmarks**: Too many landmarks dilute their value. In particular, avoid labeling a `<section>` (which turns it into a `region` landmark) — `region` should be a last resort when no other landmark fits.
+- **Don't overuse landmarks**: Too many landmarks dilute their value. In particular, avoid labeling a `<section>` (which turns it into a `region` landmark) - `region` should be a last resort when no other landmark fits.
 
 ### Code Examples
 
@@ -62,14 +62,14 @@ Keep these principles in mind throughout:
 
 #### DOs
 - **Prefer HTML elements and attributes to ARIA**: A native element comes with the right role and behavior. `<button>` already implies `role="button"`; `required` already implies `aria-required`.
-- **Match ARIA implementations to actual behavior**: If you set `role="tab"`, the element must behave like a tab — including keyboard interactions. Many ARIA patterns can't be implemented in CSS alone and need JavaScript.
+- **Match ARIA implementations to actual behavior**: If you set `role="tab"`, the element must behave like a tab - including keyboard interactions. Many ARIA patterns can't be implemented in CSS alone and need JavaScript.
 - **Be deliberate about `disabled` vs `aria-disabled`**: `disabled` removes the element from the focus order entirely (and `tabindex="0"` won't bring it back), which is often wrong for toolbar buttons or links. `aria-disabled="true"` keeps the element focusable so users can land on it and learn it's disabled.
 
 #### DON'Ts
 - **Don't use ARIA when native HTML exists**: Avoid `<div role="button">` or `<a role="button">` if `<button>` works.
 - **Don't add redundant ARIA roles or properties**: Avoid `<ul role="list">`, `<nav role="navigation">`, or `<input required aria-required="true">`.
   - **Caveat**: Safari removes list semantics from `<ul>`/`<ol>` outside `<nav>` when `list-style: none` or `display: flex`/`grid` is applied. In that case `role="list"` is required to restore them.
-- **Don't assume custom elements have no ARIA**: Custom elements can attach ARIA via `ElementInternals`, which some automated test tools can't see — so the absence of `role`/`aria-*` attributes in markup doesn't prove the element has no semantics. Verify with the browser's accessibility-tree inspector.
+- **Don't assume custom elements have no ARIA**: Custom elements can attach ARIA via `ElementInternals`, which some automated test tools can't see - so the absence of `role`/`aria-*` attributes in markup doesn't prove the element has no semantics. Verify with the browser's accessibility-tree inspector.
 
 ## 3. Accessible Names and Descriptions
 
@@ -79,17 +79,17 @@ Every interactive element and some landmarks need an accessible name, and many b
 
 #### DOs
 - **Prefer native naming mechanisms**: `<label>` for form controls, `<caption>` for `<table>`, `<legend>` for `<fieldset>`, `<figcaption>` for `<figure>`.
-- **Explicitly associate `<label>` with its control via `for`/`id`**, even when nesting the input inside the label — explicit association improves assistive-tech support.
+- **Explicitly associate `<label>` with its control via `for`/`id`**, even when nesting the input inside the label - explicit association improves assistive-tech support.
 - **Prefer `aria-labelledby` over `aria-label` when a visible label exists**: avoids duplication, improves maintainability, and translates better.
 - **Prefer to reuse the same accessible name for hyperlinks that share an `href`.**
 - **Use visually hidden text to disambiguate controls** that look identical visually but do different things (e.g. multiple "Edit" buttons in a list).
 
 #### DON'Ts
-- **Don't put `aria-label`/`aria-labelledby` on elements that shouldn't be named** — e.g. plain `<div>`, `<span>`, or custom elements without a role. Custom elements may have an implicit role set via `ElementInternals`, so the absence of a `role` attribute isn't conclusive.
+- **Don't put `aria-label`/`aria-labelledby` on elements that shouldn't be named** - e.g. plain `<div>`, `<span>`, or custom elements without a role. Custom elements may have an implicit role set via `ElementInternals`, so the absence of a `role` attribute isn't conclusive.
 - **Don't reuse an accessible name across controls with different effects in the same view** (close buttons for two different open dialogs are fine because only one is reachable at a time; multiple “Edit” buttons for different content is not).
 - **Don't reuse an accessible name across hyperlinks pointing to different `href`s.**
 - **Don't pack descriptions, error messages, or instructions into the label.**
-- **Don't repeat state already exposed via ARIA** (`aria-expanded`, `aria-checked`, `aria-selected`, `aria-pressed`) inside the accessible name — it creates redundancy and ambiguity.
+- **Don't repeat state already exposed via ARIA** (`aria-expanded`, `aria-checked`, `aria-selected`, `aria-pressed`) inside the accessible name - it creates redundancy and ambiguity.
 - **Don't include the role name in the label**: `<nav aria-label="Primary navigation">` reads as "Primary navigation navigation."
 - **Don't use `title` or `placeholder` as a naming mechanism.**
 - **Don't include interactive elements in an `aria-describedby` target** unless their text content reads sensibly as a description on its own (e.g. if a link’s text is the same as how it’s labelled elsewhere, it can be included within a description).
@@ -100,7 +100,7 @@ A `.visually-hidden` utility lets you provide text for screen readers without re
 
 ```css
 /* Hides content visually but keeps it in the accessibility tree.
-   :focus-within / :active opt elements out — useful for skip links and
+   :focus-within / :active opt elements out - useful for skip links and
    any focusable content wrapped in this class. */
 .visually-hidden:where(:not(:focus-within, :active)) {
   position: absolute !important;
@@ -154,7 +154,7 @@ When the hidden content is focusable (skip links, focus-receiving wrappers), the
 - **Logical Tab Order**: Ensure tab order matches visual layouts (top-to-bottom).
 - **Visible Focus Indicators**: Always style `:focus-visible` states explicitly. If disabling defaults, provide overrides with sufficient contrast.
 - **Custom Trigger Keyboards**: Attach Enter/Space handlers for custom simulated interactive elements. When implementing a custom keyboard handler for button-like elements, `Enter` should be a `keydown` handler and `Space` should be a `keyup` handler (matching native `<button>` behavior where `Enter` repeats and `Space` triggers on release).
-- **Use `tabindex` deliberately**: Anything focusable — by keyboard or programmatically — should have an implicit or explicit ARIA role, so don't make every element focusable. When focus is needed, choose `tabindex="0"` to add the element to the tab order or `tabindex="-1"` to make it programmatically focusable only (e.g., a skip-link target).
+- **Use `tabindex` deliberately**: Anything focusable - by keyboard or programmatically - should have an implicit or explicit ARIA role, so don't make every element focusable. When focus is needed, choose `tabindex="0"` to add the element to the tab order or `tabindex="-1"` to make it programmatically focusable only (e.g., a skip-link target).
 - **Manage Toggle States**: Utilize `aria-expanded` and `aria-pressed` to communicate toggle states for custom controls.
 
 #### DON'Ts
@@ -300,7 +300,7 @@ function toggleWidgetState() {
 
 ## 8. Live Regions
 
-Live regions let assistive tech announce content updates that aren't tied to navigation or focus changes. They're easy to misuse — too many regions, or noisy ones, quickly become spam for screen-reader users.
+Live regions let assistive tech announce content updates that aren't tied to navigation or focus changes. They're easy to misuse - too many regions, or noisy ones, quickly become spam for screen-reader users.
 
 ### Live Region Urgency Table
 
@@ -315,13 +315,13 @@ Live regions let assistive tech announce content updates that aren't tied to nav
 ### Actionable Guidelines
 
 #### DOs
-- **Centralize live regions for non-visible announcements**: A single `polite` region and a single `assertive` region per page (with whatever `aria-atomic` configuration you need) keeps announcements consistent and easier to maintain. Many frameworks ship their own announcer abstraction — use it.
+- **Centralize live regions for non-visible announcements**: A single `polite` region and a single `assertive` region per page (with whatever `aria-atomic` configuration you need) keeps announcements consistent and easier to maintain. Many frameworks ship their own announcer abstraction - use it.
 - **Debounce frequently-changing regions**: If a region can update many times per second (e.g. a combobox's result count as the user types), debounce so users aren't spammed.
 - **Delay slightly when other announcements may collide**: When the user is typing or focus is being managed, a small delay before announcing keeps live-region updates from overlapping other speech.
 
 #### DON'Ts
-- **Don't use live regions for interstitial states** like "Loading…" or "Updating…" unless they're meaningfully informative — they usually just create noise.
-- **Don't add live-region updates to inert DOM**: When dialogs open or sections become `inert`, queued or debounced messages can end up unannounced — or announced from DOM the user can't reach. Coordinate live-region updates with dialog/inert state changes.
+- **Don't use live regions for interstitial states** like "Loading…" or "Updating…" unless they're meaningfully informative - they usually just create noise.
+- **Don't add live-region updates to inert DOM**: When dialogs open or sections become `inert`, queued or debounced messages can end up unannounced - or announced from DOM the user can't reach. Coordinate live-region updates with dialog/inert state changes.
 
 ### Code Example
 
@@ -356,7 +356,7 @@ Live regions let assistive tech announce content updates that aren't tied to nav
 - **Don't use Justified Text Alignment**: Avoid `text-align: justify`.
 - **Don't use Ornate fonts**: Omit cursive typefaces for main reading content.
 - **Don't rely on all-caps for emphasis**: Prefer bolding for visual emphasis, and use `<em>`/`<strong>` when the emphasis is semantic.
-- **Limit emphasis overall**: Emphasis loses meaning when it's everywhere — apply it only where it changes how the content should be read.
+- **Limit emphasis overall**: Emphasis loses meaning when it's everywhere - apply it only where it changes how the content should be read.
 
 ### Code Examples
 
@@ -419,7 +419,7 @@ article {
 
 ## 11. Modals and Native Dialogs
 
-Modern browsers provide native solutions for creating modal dialogs which avoid the need for focus traps, managing the accessibility of outside content, ensuring the content is on top, and dimming the background content — all of which can be error prone and require heavy JavaScript event tracking to maintain.
+Modern browsers provide native solutions for creating modal dialogs which avoid the need for focus traps, managing the accessibility of outside content, ensuring the content is on top, and dimming the background content - all of which can be error prone and require heavy JavaScript event tracking to maintain.
 
 ### Actionable Guidelines
 

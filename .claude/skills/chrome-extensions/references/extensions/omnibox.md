@@ -58,9 +58,9 @@ chrome.omnibox.onInputEntered.addListener((text, disposition) => {
 ## Description Formatting
 
 Suggestions support XML-like formatting:
-- `<url>text</url>` — renders as URL style
-- `<match>text</match>` — bold match highlighting
-- `<dim>text</dim>` — dimmed/secondary text
+- `<url>text</url>` - renders as URL style
+- `<match>text</match>` - bold match highlighting
+- `<dim>text</dim>` - dimmed/secondary text
 
 ## Default Suggestion
 

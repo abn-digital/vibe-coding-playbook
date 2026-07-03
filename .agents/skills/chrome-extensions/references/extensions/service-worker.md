@@ -7,10 +7,10 @@ persistent background pages, you CANNOT rely on in-memory state.
 
 ## Rules
 
-1. **Never store state in global variables** — treat every event handler as if the SW just started
-2. **Use chrome.storage for all persistent state** — read on demand, write after changes
-3. **Use chrome.alarms for timers** — not setTimeout/setInterval (these die with the SW)
-4. **Use chrome.storage.session for ephemeral session state** — survives SW restart but not browser restart
+1. **Never store state in global variables** - treat every event handler as if the SW just started
+2. **Use chrome.storage for all persistent state** - read on demand, write after changes
+3. **Use chrome.alarms for timers** - not setTimeout/setInterval (these die with the SW)
+4. **Use chrome.storage.session for ephemeral session state** - survives SW restart but not browser restart
 
 ## Storage Tier Selection
 
@@ -79,9 +79,9 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 
 Occasionally you need the SW alive for a long-running operation. Use one of:
 
-1. **chrome.offscreen** — create an offscreen document for long tasks
-2. **Periodic storage writes** — each chrome.storage call resets the idle timer
-3. **Active port connections** — an open port keeps the SW alive
+1. **chrome.offscreen** - create an offscreen document for long tasks
+2. **Periodic storage writes** - each chrome.storage call resets the idle timer
+3. **Active port connections** - an open port keeps the SW alive
 
 ```js
 // Port-based keepalive from popup/side panel
@@ -136,7 +136,7 @@ async function incrementDailyCount() {
   const today = getToday();
 
   if (countDate !== today) {
-    // New day — reset
+    // New day - reset
     await chrome.storage.local.set({ dailyCount: 1, countDate: today });
     return 1;
   } else {

@@ -14,7 +14,7 @@ Rules can be combined with different eagerness settings to prefetch eagerly and 
 
 ## When to use it
 
-Speculative loading is especially useful for static pages, where the content is not likely to change often, and where pages are cheaper to produce—especially if cached at the edge. It can also be used for dynamic pages, but it is important to be careful about the potential for stale content.
+Speculative loading is especially useful for static pages, where the content is not likely to change often, and where pages are cheaper to produce-especially if cached at the edge. It can also be used for dynamic pages, but it is important to be careful about the potential for stale content.
 
 Speculative loading is typically used for same-origin links, though more advanced options allow for some cross-origin speculation. This guide concentrates on the more-common same-origin use case.
 
@@ -103,7 +103,7 @@ This example shows a rule set that prefetches all links eagerly, and then goes f
 ## Best Practices
 
 - **DO** use speculation rules to prefetch and prerender pages that the user is likely to visit next.
-- **DO** use speculation rules for static sites, where the content is not likely to change often, and where pages are cheaper to produce—especially if cached at the edge.
+- **DO** use speculation rules for static sites, where the content is not likely to change often, and where pages are cheaper to produce-especially if cached at the edge.
 - **DO** take more care when using speculation rules for dynamic pages, where the content is more likely to change often, may become out of date, and where pages are more expensive to produce.
 - **DO** prefer document rules over list rules, as they are more flexible, allow the same rule to be shared across multiple pages, and can be used to prefetch and prerender pages that are not known in advance.
 - **DO** consider the trade-offs between prefetch and prerender, and choose the appropriate one for your use case. Prerender is more expensive than prefetch and can cause more unintended side effects in complex applications that display dynamic state, but provides a better user experience. Ask the developer for their preference if unsure.

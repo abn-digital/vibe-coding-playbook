@@ -7,7 +7,7 @@ are optional but improve listing quality and approval odds.
 ---
 
 ```markdown
-# Chrome Web Store Listing — [Extension Name]
+# Chrome Web Store Listing - [Extension Name]
 
 > Last Updated: YYYY-MM-DD
 
@@ -24,12 +24,12 @@ are optional but improve listing quality and approval odds.
 **Detailed Description** [REQUIRED]
 <!-- Max 16,000 characters. Structure recommendation:
      Line 1: One-sentence summary of what the extension does
-     Paragraph 2: Key features (use line breaks, not bullet points — CWS strips markdown)
+     Paragraph 2: Key features (use line breaks, not bullet points - CWS strips markdown)
      Paragraph 3: How to use it (step-by-step)
      Paragraph 4: Privacy/permissions note (builds trust)
      Paragraph 5: Support/feedback info
 
-     WRITE FROM A USER'S PERSPECTIVE — what the extension does FOR them, not HOW it works.
+     WRITE FROM A USER'S PERSPECTIVE - what the extension does FOR them, not HOW it works.
      Never mention implementation details: APIs used, libraries, frameworks, code patterns.
 
      ❌ "Uses a MutationObserver and custom elements to track page changes"
@@ -94,7 +94,7 @@ are optional but improve listing quality and approval odds.
 
 ## Privacy & Data Use
 
-<!-- These map to the CWS data use disclosure form. Be exhaustive and accurate —
+<!-- These map to the CWS data use disclosure form. Be exhaustive and accurate -
      mismatches between what you declare and what the code does cause rejection. -->
 
 ### Data Collection

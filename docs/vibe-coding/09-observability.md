@@ -18,7 +18,7 @@ Emit structured JSON from backend:
 
 ## Health endpoint
 
-`GET /api/health` — used by Docker healthchecks, Cloud Run probes, and GCP uptime checks.
+`GET /api/health` - used by Docker healthchecks, Cloud Run probes, and GCP uptime checks.
 
 ```json
 { "status": "ok", "service": "api", "version": "0.1.0" }
@@ -37,13 +37,13 @@ metrics:
 | Alert | POC | Product |
 |---|---|---|
 | Uptime check failed (`/api/health`) | ✅ | ✅ |
-| Cloud Run 5xx > 5% | ✅ | — |
-| GCE VM not reporting | — | ✅ |
-| Disk usage > 85% | — | ✅ |
-| Memory usage > 90% | — | ✅ |
+| Cloud Run 5xx > 5% | ✅ | - |
+| GCE VM not reporting | - | ✅ |
+| Disk usage > 85% | - | ✅ |
+| Memory usage > 90% | - | ✅ |
 
-Provisioned via Terraform — see [10-terraform.md](10-terraform.md).
+Provisioned via Terraform - see [10-terraform.md](10-terraform.md).
 
 ## Uptime check target
 
-**`/api/health` only** — not the SPA root. Static files can 200 while the API is dead.
+**`/api/health` only** - not the SPA root. Static files can 200 while the API is dead.

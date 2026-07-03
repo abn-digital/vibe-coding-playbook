@@ -45,29 +45,29 @@ If you have questions, contact [email].
 
 If your extension stores or transmits data, cover these topics:
 
-1. **What data is collected** — Be specific. "User preferences" is not enough.
+1. **What data is collected** - Be specific. "User preferences" is not enough.
    Say "Your selected theme preference (light/dark) and saved highlight colors."
 
-2. **How data is stored** — Local storage only? Synced via chrome.storage.sync?
+2. **How data is stored** - Local storage only? Synced via chrome.storage.sync?
    Sent to a server?
 
-3. **Why data is collected** — Tie each data type to a specific feature.
+3. **Why data is collected** - Tie each data type to a specific feature.
 
-4. **Third-party services** — If you use any APIs (analytics, auth, etc.), name them
+4. **Third-party services** - If you use any APIs (analytics, auth, etc.), name them
    and link to their privacy policies.
 
-5. **Data sharing** — State whether data is shared with third parties. If yes, with
+5. **Data sharing** - State whether data is shared with third parties. If yes, with
    whom and why. If no, say so explicitly.
 
-6. **Data retention** — How long is data kept? Can the user delete it?
+6. **Data retention** - How long is data kept? Can the user delete it?
 
-7. **User controls** — How can users access, export, or delete their data?
+7. **User controls** - How can users access, export, or delete their data?
    If the extension has a "clear data" button, mention it.
 
-8. **Changes to the policy** — State that you'll update the policy if practices change
+8. **Changes to the policy** - State that you'll update the policy if practices change
    and how users will be notified.
 
-9. **Contact** — Email or URL for privacy questions.
+9. **Contact** - Email or URL for privacy questions.
 
 ### Template
 
@@ -82,7 +82,7 @@ Last updated: [Date]
 
 ## How Data Is Stored
 
-[Describe storage mechanism — local only, synced, or server-side.]
+[Describe storage mechanism - local only, synced, or server-side.]
 
 ## How Data Is Used
 
@@ -122,7 +122,7 @@ If none, state "This extension does not use any third-party services."]
   Verify the link before submitting.
 
 - **Missing data types**: If your extension uses `chrome.storage.sync`, that data goes to
-  Google's servers — disclose this. If you make any `fetch()` calls, disclose what's sent.
+  Google's servers - disclose this. If you make any `fetch()` calls, disclose what's sent.
 
 - **No contact information**: The CWS requires a way for users to reach you about privacy
   concerns. Include an email address at minimum.

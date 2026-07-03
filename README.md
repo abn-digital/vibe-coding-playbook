@@ -1,6 +1,6 @@
 # Vibe-Coding & Production Playbooks
 
-Two lifecycle stages for building web apps — fast disposable POCs, then production-grade products.
+Two lifecycle stages for building web apps - fast disposable POCs, then production-grade products.
 
 ## Pick your stage
 
@@ -28,8 +28,8 @@ See [AGENTS.md](AGENTS.md). Run `/grill-with-docs` before significant work.
 
 ## Domain model
 
-- [CONTEXT.md](CONTEXT.md) — shared glossary and graduation checklist
-- [CONTEXT-MAP.md](CONTEXT-MAP.md) — conventions and context index
+- [CONTEXT.md](CONTEXT.md) - shared glossary and graduation checklist
+- [CONTEXT-MAP.md](CONTEXT-MAP.md) - conventions and context index
 
 ## License
 

@@ -6,7 +6,7 @@ Animating elements to dynamic sizes like `block-size: auto` or `inline-size: max
 
 1.  **Opt-in to keyword interpolation**: Apply `interpolate-size: allow-keywords` to a parent element (typically `:root`) to enable transitions for properties using intrinsic keywords.
 2.  **Define the transition**: Set a `transition` for the sizing property (e.g., `block-size`, `inline-size`) on the target element.
-3.  **Use intrinsic keywords**: Change the sizing property to a supported intrinsic keyword—`auto`, `min-content`, `max-content`, `fit-content`, or (for flex-basis) `content`—during an interaction (e.g., `:hover` or a state class).
+3.  **Use intrinsic keywords**: Change the sizing property to a supported intrinsic keyword-`auto`, `min-content`, `max-content`, `fit-content`, or (for flex-basis) `content`-during an interaction (e.g., `:hover` or a state class).
 4.  **Perform calculations (Optional)**: Use `calc-size()` if you need to perform math on an intrinsic size (e.g., `auto + 2rem`). `calc-size()` also supports the `any` keyword for basis-agnostic calculations.
 
 ## Example: Generic Expansion Pattern
@@ -54,7 +54,7 @@ You can apply this pattern to any container (like a "Show More" section or a nav
 
 ## Example: Transition from Intrinsic to Fixed
 
-You can also animate in the opposite direction—starting from a natural size and collapsing to a specific length. This is useful for "dismissible" components.
+You can also animate in the opposite direction-starting from a natural size and collapsing to a specific length. This is useful for "dismissible" components.
 
 ```css
 .collapsible-alert {

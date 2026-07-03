@@ -38,10 +38,10 @@ Be allergic to knowledge duplication. Prefer variables over repetition, but when
 - `currentColor` instead of defining a variable and setting `color` to it
 - The `inherit` keyword instead of defining a variable on the parent and using it on the same property across parent and child.
 - `em` units instead of `font-size: var(--size)`
-- `cqw`/`cqh` (or their logical versions — `cqi`/`cqb`) units instead of repeating box model values.
+- `cqw`/`cqh` (or their logical versions - `cqi`/`cqb`) units instead of repeating box model values.
 - Code duplication is not knowledge duplication. The goal is robustness and maintainability, not saving characters.
 - Prefer **logical properties and values** over physical ones (e.g. `margin-inline-start` instead of `margin-left`) so that styles adapt to different writing modes and orientations. Even if the page author does not plan to localize, external translation tools often display translated text in context.
-- Do not use logical properties indiscriminately — ask yourself "would I want this to flip in RTL?" — if the answer is no, use the physical property instead.
+- Do not use logical properties indiscriminately - ask yourself "would I want this to flip in RTL?" - if the answer is no, use the physical property instead.
 - Consider different viewing modes (dark mode, high contrast mode), different viewport sizes, and different input modes (touch, keyboard, pointer).
 
 ## 2. Inheritance and The Cascade
@@ -69,7 +69,7 @@ Modern browser-native selectors reduce the need for preprocessors and complex st
 
 ### Use `:is()` (or `:where()`) instead of CSS rule duplication for fallbacks
 
-**DO NOT** duplicate CSS rules to provide fallbacks for pseudo-classes that may not be supported — use `:is()` or `:where()` instead and take advantage of their forgiving parsing rules.
+**DO NOT** duplicate CSS rules to provide fallbacks for pseudo-classes that may not be supported - use `:is()` or `:where()` instead and take advantage of their forgiving parsing rules.
 
 ```css
 /* BAD: duplicate rules instead of using `:where()` */
@@ -216,7 +216,7 @@ Using `@scope` fixes this:
 
 - Interactive elements should be at least 24×24 CSS pixels (WCAG 2.5.8 AA). Enforce with `min-block-size` / `min-inline-size` or padding rather than `width` / `height`, so content can grow the target but not shrink it.
 - Bump targets up on coarse pointers: `@media (pointer: coarse) { ... }`.
-- **DON'T** use `touch-action: none` for custom gestures — it disables page scrolling through the element. Scope to the axis you actually need: `pan-y` for horizontal swipes (page still scrolls vertically), `pan-x` for vertical ones. Reserve `none` for elements where no native touch behavior makes sense (e.g. a drawing canvas).
+- **DON'T** use `touch-action: none` for custom gestures - it disables page scrolling through the element. Scope to the axis you actually need: `pan-y` for horizontal swipes (page still scrolls vertically), `pan-x` for vertical ones. Reserve `none` for elements where no native touch behavior makes sense (e.g. a drawing canvas).
 
 ## 5. Design Tokens and Theming
 
@@ -247,7 +247,7 @@ See `dark-mode` (via `npx -y modern-web-guidance@latest retrieve "dark-mode"`) f
 In Forced Colors Mode (High Contrast on Windows), the browser overrides author colors with system keywords and strips `background-image`, `box-shadow`, and `border-image`.
 
 - Define system color fallbacks for color tokens using `@media (forced-colors: active)`.
-- **DON'T** rely on `background-image`, `box-shadow`, or `border-image` to convey borders, separators, or state — they disappear in forced colors (and often in print too). If you must, ensure there's an alternative in forced colors mode, such as `outline` or `border` with system color keywords (`CanvasText`, `LinkText`, `ButtonText`, `Highlight`, `GrayText`, etc.).
+- **DON'T** rely on `background-image`, `box-shadow`, or `border-image` to convey borders, separators, or state - they disappear in forced colors (and often in print too). If you must, ensure there's an alternative in forced colors mode, such as `outline` or `border` with system color keywords (`CanvasText`, `LinkText`, `ButtonText`, `Highlight`, `GrayText`, etc.).
 - Use `forced-color-adjust: none` where color is essential information (syntax highlighter, color picker swatch). **DON'T** use `forced-color-adjust: none` just to preserve aesthetics.
 
 
@@ -267,15 +267,15 @@ Even if it requires modern features, it degrades gracefully in older browsers, a
 
 Before re-creating browser UI (form controls, scrollbars, selections, error messages, etc), first verify that:
 1. the browser UI cannot be customized enough for your needs, even with modern CSS,
-2. the desired customization is sufficiently critical to justify the tradeoffs of re-creating built-in UI — most notably losing accessible semantics, keyboard handling, IME, and AT integration that the native UI provides for free.
+2. the desired customization is sufficiently critical to justify the tradeoffs of re-creating built-in UI - most notably losing accessible semantics, keyboard handling, IME, and AT integration that the native UI provides for free.
 
 Example customizations that are possible:
 - Use `::selection` to customize highlighted text colors.
-- **DON'T** apply `user-select: none` to content text — breaks copy-paste, translation tools, and AT "read from here" gestures. Limit it to chrome (drag handles, toolbars, redundant button labels).
+- **DON'T** apply `user-select: none` to content text - breaks copy-paste, translation tools, and AT "read from here" gestures. Limit it to chrome (drag handles, toolbars, redundant button labels).
 - Use `accent-color` to apply the page's accent color to any browser-generated UI.
 - Use `color-scheme` to have browser UI adapt to light/dark mode.
-- Use `scrollbar-color` to customize scrollbar colors and `scrollbar-width` to control scrollbar thickness — keep the thumb visibly distinct from the track (≥3:1), and don't set `scrollbar-width: none` on scrollable regions (use it only when scrolling is fully replaced by another affordance).
-- Use `:user-invalid` / `:user-valid` for validity styling, **not** `:invalid` / `:valid` — they only match after the user has interacted with the field, avoiding the hostile default of flagging required-empty fields as errors on page load.
+- Use `scrollbar-color` to customize scrollbar colors and `scrollbar-width` to control scrollbar thickness - keep the thumb visibly distinct from the track (≥3:1), and don't set `scrollbar-width: none` on scrollable regions (use it only when scrolling is fully replaced by another affordance).
+- Use `:user-invalid` / `:user-valid` for validity styling, **not** `:invalid` / `:valid` - they only match after the user has interacted with the field, avoiding the hostile default of flagging required-empty fields as errors on page load.
 - Buttons and text fields (including `<textarea>`) can generally be styled as normal elements.
 - Use `font-size` to scale and other textual properties to control typography
 
@@ -384,7 +384,7 @@ Then use like:
 ### Patterns
 
 Many patterns can be created via CSS gradients + hard stops, and these can be more flexible and performant than SVGs or external images as they can have access to CSS variables and lengths from the surrounding context.
-You don't need to repeat the position twice — just use `0` or `0%` and gradient fixup will auto-adjust it.
+You don't need to repeat the position twice - just use `0` or `0%` and gradient fixup will auto-adjust it.
 
 Examples below.
 
@@ -406,7 +406,7 @@ Checkerboard pattern with `1em` squares:
 background: repeating-conic-gradient(var(--color-1) 0 25%, var(--color-2) 0 50%) 0 / 2em 2em;
 ```
 
-Polka dot with `.5em` radius dots spaced `2em` apart (horizontally/vertically — multiply by `sqrt(2)` for diagonal distance):
+Polka dot with `.5em` radius dots spaced `2em` apart (horizontally/vertically - multiply by `sqrt(2)` for diagonal distance):
 
 ```css
 --distance: 2em;
@@ -504,10 +504,10 @@ progress:not([value]) {
 
 ## 10. Generated content
 
-- **DON'T** use `content` to convey meaningful text (labels, state, instructions) — keep that in the DOM (WCAG F87). The alt text argument is harm reduction for cases where decoration accidentally carries meaning, not a license.
+- **DON'T** use `content` to convey meaningful text (labels, state, instructions) - keep that in the DOM (WCAG F87). The alt text argument is harm reduction for cases where decoration accidentally carries meaning, not a license.
 - Use the alternative text argument of `content` to provide alt text for screen readers. E.g. `content: url(cloud.svg) / "Save";`
 - Use `content: "text" / "";` to prevent purely decorative text from being announced to screen readers.
-- **DON'T** use an empty alt text argument for images — they're already presentational by default. E.g. this is wrong: `content: url(cloud.svg) / "";`.
+- **DON'T** use an empty alt text argument for images - they're already presentational by default. E.g. this is wrong: `content: url(cloud.svg) / "";`.
 - **DON'T** use the alt text argument to describe emojis unless the description differs from the official emoji name. E.g. don't do `content: "🎉" / "celebration";`, but `content: "🎉" / "Yay!";` is fine.
 
 **ONLY** use the alt text argument when the text is different than the primary value and is not already present in the DOM. I.e. this is wrong:

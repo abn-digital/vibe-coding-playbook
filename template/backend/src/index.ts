@@ -1,18 +1,5 @@
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import { healthHandler } from "./routes/health.js";
-import {
-  verifyFirebaseAuth,
-  type AppVariables,
-} from "./middleware/verifyFirebaseAuth.js";
-
-const app = new Hono<{ Variables: AppVariables }>();
-
-app.get("/api/health", healthHandler);
-
-app.get("/api/me", verifyFirebaseAuth, (c) => {
-  return c.json({ uid: c.get("uid"), email: c.get("email") ?? null });
-});
+import { app } from "./app.js";
 
 const port = Number(process.env.PORT ?? 8081);
 

@@ -1,4 +1,4 @@
-# Local dev — json-file logging. Connects to hike-agentic-playground GCP (no emulators).
+# Local dev - json-file logging. Connects to hike-agentic-playground GCP (no emulators).
 # Prerequisite: gcloud auth application-default login
 services:
   backend:
@@ -12,6 +12,10 @@ services:
     environment:
       PORT: "8081"
       GOOGLE_CLOUD_PROJECT: hike-agentic-playground
+      DATABASE_URL: postgres://postgres:postgres@db:5432/app
+    depends_on:
+      db:
+        condition: service_healthy
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -33,6 +37,25 @@ services:
       - compose.env
     environment:
       VITE_FIREBASE_PROJECT_ID: hike-agentic-playground
+      API_PROXY_TARGET: http://backend:8081
     volumes:
       - ./frontend:/app
       - /app/node_modules
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d app"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

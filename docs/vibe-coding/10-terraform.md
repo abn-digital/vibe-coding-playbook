@@ -39,7 +39,7 @@ Set `create_slack_channel = true` only on first-time org setup, or `terraform im
 
 ## Template
 
-See [template/terraform/](../../template/terraform/) — `modules/monitoring` and `environments/poc/`.
+See [template/terraform/](../../template/terraform/) - `modules/monitoring` and `environments/poc/`.
 
 ## POC vs product environments
 
@@ -48,4 +48,4 @@ See [template/terraform/](../../template/terraform/) — `modules/monitoring` an
 | `environments/poc/` | `poc/<app>` | `true` | `false` |
 | `environments/product/` | `product/<app>` | `false` | `true` (+ `gce_instance_id`) |
 
-Copy `environments/poc/` to `environments/product/` when graduating — new prefix, new apply, new resources.
+Copy `environments/poc/` to `environments/product/` when graduating - new prefix, new apply, new resources.

@@ -27,8 +27,8 @@ Ver [AGENTS.md](AGENTS.md). Ejecutá `/grill-with-docs` antes de trabajo signifi
 
 ## Modelo de dominio
 
-- [CONTEXT.md](CONTEXT.md) — glosario y checklist de graduación
-- [CONTEXT-MAP.md](CONTEXT-MAP.md) — convenciones
+- [CONTEXT.md](CONTEXT.md) - glosario y checklist de graduación
+- [CONTEXT-MAP.md](CONTEXT-MAP.md) - convenciones
 
 ## Licencia
 

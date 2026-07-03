@@ -9,7 +9,7 @@ This appears in search results and category pages. It's your elevator pitch. Rul
 - Start with a verb or the extension's function: "Blocks ads on all websites" not "Ad blocker"
 - Be specific: "Translates selected text into 50+ languages" not "Translation tool"
 - Include the primary keyword naturally
-- Don't waste characters on "Chrome extension" — the user already knows
+- Don't waste characters on "Chrome extension" - the user already knows
 
 **Good examples:**
 - "Save articles to read later with one click. Works offline."
@@ -29,9 +29,9 @@ The CWS strips all markdown formatting. Use plain text with line breaks. Structu
 [One sentence: what does this extension do?]
 
 FEATURES
-• Feature 1 — brief explanation
-• Feature 2 — brief explanation
-• Feature 3 — brief explanation
+• Feature 1 - brief explanation
+• Feature 2 - brief explanation
+• Feature 3 - brief explanation
 
 HOW TO USE
 1. Click the extension icon in the toolbar
@@ -43,18 +43,18 @@ This extension does not collect any personal data. Your [data type] is stored
 locally on your device and never transmitted to any server.
 
 PERMISSIONS
-• "Read and change data on sites you visit" — needed to [specific feature].
+• "Read and change data on sites you visit" - needed to [specific feature].
   The extension only activates when you [trigger action].
 
 SUPPORT
 Found a bug? Have a suggestion? Email [email] or open an issue at [URL].
 
-Version [X.Y.Z] — [Brief changelog for latest version]
+Version [X.Y.Z] - [Brief changelog for latest version]
 ```
 
 ### The Implementation-Detail Rule
 
-**Never describe how the extension is built.** Potential users are not developers evaluating your stack — they want to know what the extension does for them.
+**Never describe how the extension is built.** Potential users are not developers evaluating your stack - they want to know what the extension does for them.
 
 Strip all of the following from every piece of copy:
 
@@ -75,14 +75,14 @@ Strip all of the following from every piece of copy:
 
 ### Why This Structure Works
 
-1. **One-sentence opener** — The reviewer and users both scan the first line. Make it count.
-2. **Features list** — Users scan for capabilities. Plain-text bullets (•) render well.
-3. **How to use** — Reduces support requests and proves the extension actually works.
-4. **Privacy section** — Pre-empts user concerns about permissions. Builds trust.
-5. **Permissions explanation** — Users see permission warnings during install. If you
+1. **One-sentence opener** - The reviewer and users both scan the first line. Make it count.
+2. **Features list** - Users scan for capabilities. Plain-text bullets (•) render well.
+3. **How to use** - Reduces support requests and proves the extension actually works.
+4. **Privacy section** - Pre-empts user concerns about permissions. Builds trust.
+5. **Permissions explanation** - Users see permission warnings during install. If you
    explain them in the description, they're less likely to abort installation.
-6. **Support info** — Required by CWS policy ("meaningful customer support").
-7. **Latest version note** — Shows the extension is actively maintained.
+6. **Support info** - Required by CWS policy ("meaningful customer support").
+7. **Latest version note** - Shows the extension is actively maintained.
 
 ### Single Purpose Statement
 
@@ -185,7 +185,7 @@ is not accessible."
 
 When an extension is rejected:
 
-1. Read the rejection email carefully — it specifies which policy was violated
+1. Read the rejection email carefully - it specifies which policy was violated
 2. Update CHROMEWEBSTORE.md with the rejection reason and fix
 3. Make the required changes to the extension code or listing
 4. Re-verify against the pre-publish checklist

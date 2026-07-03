@@ -74,7 +74,7 @@ element.innerHTML = `Hello, ${untrustedName}!`;
 element.textContent = `Hello, ${untrustedName}!`;
 ```
 
-Trusted Types can enforce this pattern at runtime by blocking string assignments to dangerous sinks. Deploying it is a CSP enforcement step with real breakage risk — see §3.3.
+Trusted Types can enforce this pattern at runtime by blocking string assignments to dangerous sinks. Deploying it is a CSP enforcement step with real breakage risk - see §3.3.
 
 ### 1.3 Secure Cookies
 Ensure new cookies are configured securely by default.
@@ -82,7 +82,7 @@ Ensure new cookies are configured securely by default.
 - **DO**: Prefer naming cookies with the `__Secure-` prefix when `__Host-` isn't appropriate. This requires the `Secure` attribute, and protects against network attackers.
 - **DO**: Explicitly set `SameSite=Lax` for standard first-party cookies.
 - **DO**: If your application will be embedded as an iframe in third-party contexts, use `SameSite=None; Secure; Partitioned`.
-- **DO NOT**: Rely on unpartitioned `SameSite=None` — these are being systematically blocked for tracking prevention.
+- **DO NOT**: Rely on unpartitioned `SameSite=None` - these are being systematically blocked for tracking prevention.
 
 ```http
 Set-Cookie: __Host-session_id=value; SameSite=Lax; HttpOnly; Secure; Path=/
@@ -126,7 +126,7 @@ Do not blindly apply strict policies to an existing application. You must first 
 ### 2.1 Inspect the Application
 Before turning anything on, gather facts:
 - **Grep for existing security headers** in server config, middleware, CDN/edge config, and meta tags: `Content-Security-Policy`, `Strict-Transport-Security`, `X-Frame-Options`, `X-Content-Type-Options`, `Permissions-Policy`, `Cross-Origin-*`, `Access-Control-*`, `Timing-Allow-Origin`, `Reporting-Endpoints`.
-- **Enumerate inline scripts and styles** in server-rendered templates and static HTML — these will need nonces, hashes, or refactoring.
+- **Enumerate inline scripts and styles** in server-rendered templates and static HTML - these will need nonces, hashes, or refactoring.
 - **List third-party script origins** loaded by the app (analytics, ads, tag managers, CDNs). These dictate what `script-src` must allow or whether `'strict-dynamic'` is viable.
 - **Identify popup-dependent flows**: OAuth, payment gateways, SSO. These constrain COOP choices.
 - **Identify cross-origin embeds and embedders**: iframes the app loads, and sites that embed the app. These constrain COEP/CORP/`frame-ancestors`.
@@ -168,8 +168,8 @@ The `'strict-dynamic'`, `https:`, and `'unsafe-inline'` tokens together form a b
 
 After collecting data, decide how to proceed with enforcement. Phase 3 has two tracks that run in parallel, not in sequence:
 
-- **Core enforcement (data-driven rollouts)** — high-breakage-risk policies that depend on Phase 2 report-only data. These are the rollouts you stage and watch.
-- **Companion policies (deploy in parallel)** — lower-risk headers that can be turned on alongside or before the core work, with little or no Phase 2 discovery required.
+- **Core enforcement (data-driven rollouts)** - high-breakage-risk policies that depend on Phase 2 report-only data. These are the rollouts you stage and watch.
+- **Companion policies (deploy in parallel)** - lower-risk headers that can be turned on alongside or before the core work, with little or no Phase 2 discovery required.
 
 ### Core enforcement (data-driven rollouts)
 
@@ -186,7 +186,7 @@ Once filtered and triaged, analyze the reports against the following common scen
   - **Decision**: Implement Nonces (server-rendered) or Hashes (static) before enforcing.
 - **Scenario**: Violations for third-party analytics scripts.
   - **Condition**: The scripts are required.
-  - **Decision**: Use `'strict-dynamic'` with a per-request nonce so the analytics loader can attach its dependencies. Do **not** add the analytics origin to a URL allowlist — domain allowlists are bypassable via open redirects, JSONP, and dependency injection on the listed origin.
+  - **Decision**: Use `'strict-dynamic'` with a per-request nonce so the analytics loader can attach its dependencies. Do **not** add the analytics origin to a URL allowlist - domain allowlists are bypassable via open redirects, JSONP, and dependency injection on the listed origin.
 - **Scenario**: Trusted Types violations on specific sinks.
   - **Condition**: Legacy code paths still write strings to `innerHTML` etc.
   - **Decision**: Refactor those sinks (per §1.2) or route them through a Trusted Types policy (§3.3) before enforcing.
@@ -194,10 +194,10 @@ Once filtered and triaged, analyze the reports against the following common scen
 #### 3.2 Transitioning to CSP Enforcement
 Only move to enforced mode when:
 1. Violations in the report-only logs have dropped to near zero or are accounted for.
-2. Reporting remains wired up after the switch — keep `report-to` on the enforced header so regressions are visible.
+2. Reporting remains wired up after the switch - keep `report-to` on the enforced header so regressions are visible.
 
 **Key directives to set:**
-- `script-src` with nonces or hashes — this is the core directive of any CSP and the primary mechanism to prevent XSS.
+- `script-src` with nonces or hashes - this is the core directive of any CSP and the primary mechanism to prevent XSS.
 - `base-uri 'none'` to block `<base>` hijacking. Legacy directives like `object-src 'none'` can be omitted in modern, post-Flash web environments.
 - *Optional but potentially breaking*: `default-src 'self'` is sometimes used as a fallback for unspecified fetch directives, but it dramatically complicates deployment and has little security value beyond `script-src`. It is generally safer to focus on robust `script-src` enforcement first.
 - *Optional*: `form-action 'self'` prevents form submissions to attacker-controlled origins.
@@ -216,7 +216,7 @@ HTML for nonce-based CSP:
 
 For static/cached HTML (SPAs) where a per-response nonce is not possible, use hash-based CSP: hash each inline script and list the hashes in `script-src`.
 
-**Avoid**: URL allowlists like `script-src https://cdn.example.com` — they are easily bypassed by open redirects, JSONP endpoints, and dependency injection on the allowed origin.
+**Avoid**: URL allowlists like `script-src https://cdn.example.com` - they are easily bypassed by open redirects, JSONP endpoints, and dependency injection on the allowed origin.
 
 #### 3.3 Trusted Types Enforcement
 Trusted Types enforces the §1.2 source-level guidance at runtime: once enabled, the browser blocks string assignments to dangerous sinks unless they pass through a named policy.
@@ -241,7 +241,7 @@ if (window.trustedTypes && trustedTypes.createPolicy) {
 
 Lowest-risk of the three. Deploy if the app is **not** an OAuth provider, payment processor, or otherwise expected to be reached from an opener.
 
-- **DO**: Use `Cross-Origin-Opener-Policy: same-origin-allow-popups` — prevents a malicious opener from mounting XS-leaks attacks while still allowing OAuth and payment flows that *the app itself* initiates.
+- **DO**: Use `Cross-Origin-Opener-Policy: same-origin-allow-popups` - prevents a malicious opener from mounting XS-leaks attacks while still allowing OAuth and payment flows that *the app itself* initiates.
 - **DO NOT**: Jump straight to `same-origin` unless you have explicitly verified that no integrations rely on cross-origin `window.opener` access.
 
 #### 3.5 Cross-Origin Resource Policy (CORP)
@@ -256,7 +256,7 @@ Set CORP explicitly on each response based on whether it should be embeddable in
 
 Highest deployment breakage risk. You only need to deploy this infrastructure if the application requires features relying on `SharedArrayBuffer` (e.g., WebAssembly multi-threading or shared memory architectures). If not required, skip this policy group.
 
-- **Preferred path (Chromium environments)**: Enable `Document-Isolation-Policy: isolate-and-credentialless`. This provides client-side isolation comparable to COEP while instructing the browser to strip cookies and authentication credentials from non-CORS cross-origin resource fetches rather than blocking them outright. Note that this is supported primarily in Chrome (142+) and other vendors have not yet shown interest, so evaluate carefully based on your target audience. Apps that need to *block* cross-origin resources lacking explicit CORP opt-in (rather than load them with credentials stripped) can adopt `isolate-and-require-corp` instead. This is stricter and harder to deploy — it requires the same subresource audit as the cross-browser path below.
+- **Preferred path (Chromium environments)**: Enable `Document-Isolation-Policy: isolate-and-credentialless`. This provides client-side isolation comparable to COEP while instructing the browser to strip cookies and authentication credentials from non-CORS cross-origin resource fetches rather than blocking them outright. Note that this is supported primarily in Chrome (142+) and other vendors have not yet shown interest, so evaluate carefully based on your target audience. Apps that need to *block* cross-origin resources lacking explicit CORP opt-in (rather than load them with credentials stripped) can adopt `isolate-and-require-corp` instead. This is stricter and harder to deploy - it requires the same subresource audit as the cross-browser path below.
 - **Cross-browser path (Complex enforcement)**: Require `Cross-Origin-Opener-Policy: same-origin` coupled with `Cross-Origin-Embedder-Policy: require-corp`. Every embedded subresource (images, styles, external media) MUST serve an explicit `Cross-Origin-Resource-Policy` header or the browser will prevent it from loading.
 
 ```http
@@ -295,7 +295,7 @@ app.use((req, res, next) => {
 
 ### Companion policies (deploy in parallel)
 
-These carry significantly lower breakage risk than the core enforcement track. They can be deployed alongside — or before — the CSP and isolation rollouts.
+These carry significantly lower breakage risk than the core enforcement track. They can be deployed alongside - or before - the CSP and isolation rollouts.
 
 #### HTTP Strict Transport Security (HSTS)
 - **DO**: `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` to force HTTPS.
@@ -324,17 +324,17 @@ Permissions-Policy: camera=(), geolocation=(), microphone=()
 #### Subresource Integrity (SRI)
 - **DO**: Use the `integrity` attribute with a cryptographic hash (preferring `sha256` or `sha512`) when loading third-party scripts, combined with `crossorigin="anonymous"`.
 - **DO**: Ensure the server/CDN sends an appropriate `Access-Control-Allow-Origin` header so the browser can compute the hash.
-- **DO NOT**: Use SRI for dynamic or unversioned assets — silent updates will cause script execution to fail. SRI is strictly for immutable, versioned assets.
+- **DO NOT**: Use SRI for dynamic or unversioned assets - silent updates will cause script execution to fail. SRI is strictly for immutable, versioned assets.
 
 ```html
 <script src="https://cdn.example.com/lib.js" integrity="sha256-H8df...39v" crossorigin="anonymous"></script>
 ```
 
 #### Cross-Origin Resource Sharing (CORS)
-CORS is a permission grant, not a defense — it tells the browser which cross-origin reads to allow. The risk is misconfiguring it as too permissive.
+CORS is a permission grant, not a defense - it tells the browser which cross-origin reads to allow. The risk is misconfiguring it as too permissive.
 
 - **DO**: Validate the `Origin` header on the server and set `Access-Control-Allow-Origin` dynamically to specific origins (rather than wildcard `*`).
-- **DO NOT**: Use wildcard `*` for `Access-Control-Allow-Origin` if `Access-Control-Allow-Credentials: true` is required — the browser will reject the response.
+- **DO NOT**: Use wildcard `*` for `Access-Control-Allow-Origin` if `Access-Control-Allow-Credentials: true` is required - the browser will reject the response.
 - **DO**: Handle preflight (`OPTIONS`) requests by returning appropriate headers before processing data.
 
 ```http

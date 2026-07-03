@@ -2,7 +2,7 @@
 
 Recording chronological data that should remain identical regardless of the viewer's location (such as birthdates, recurring alarms, or national holidays) has historically been error-prone with the legacy `Date` object. Because `Date` objects always represent a specific instant in time and are tied to a time zone, saving a date like "1990-01-01" can result in users in different time zones seeing "1989-12-31" due to offset shifts.
 
-The `Temporal` API introduces "Plain" types—such as `Temporal.PlainDate` and `Temporal.PlainTime`—which have no concept of a time zone. These types represent calendar dates and wall-clock times exactly as you would read them off a calendar or a clock, making them ideal for location-agnostic data.
+The `Temporal` API introduces "Plain" types-such as `Temporal.PlainDate` and `Temporal.PlainTime`-which have no concept of a time zone. These types represent calendar dates and wall-clock times exactly as you would read them off a calendar or a clock, making them ideal for location-agnostic data.
 
 ## How to Implement
 

@@ -11,7 +11,7 @@
 ## Basic Syntax
 
 ```css
-/* calc-size(<calc-size-basis>, <calc-sum>) — mathematical operations on intrinsic sizing keywords */
+/* calc-size(<calc-size-basis>, <calc-sum>) - mathematical operations on intrinsic sizing keywords */
 .element {
   /* MANDATORY: Always provide a fallback for browsers that do not support calc-size() */
   inline-size: min-content;
@@ -128,7 +128,7 @@ Animations that change the size of large layout areas can be particularly disrup
 
 
 ### Applying Constraints to Intrinsic Sizes
-You can use `calc-size()` with any CSS math function—such as `min()`, `max()`, `clamp()`, or `round()`—to ensure an element's intrinsic size remains within design boundaries.
+You can use `calc-size()` with any CSS math function-such as `min()`, `max()`, `clamp()`, or `round()`-to ensure an element's intrinsic size remains within design boundaries.
 
 ```css
 .dynamic-container {

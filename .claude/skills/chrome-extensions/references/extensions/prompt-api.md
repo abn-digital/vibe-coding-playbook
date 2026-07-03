@@ -1,7 +1,7 @@
-# Chrome Prompt API (LanguageModel) — Extension-Specific Notes
+# Chrome Prompt API (LanguageModel) - Extension-Specific Notes
 
-The `LanguageModel` API (Prompt API) works in all extension contexts — service worker, popup,
-side panel, and other extension pages — with no additional manifest permissions required.
+The `LanguageModel` API (Prompt API) works in all extension contexts - service worker, popup,
+side panel, and other extension pages - with no additional manifest permissions required.
 
 For general Prompt API usage (availability checks, session creation, streaming, session
 management), use the `modern-web-guidance` skill.
@@ -11,7 +11,7 @@ management), use the `modern-web-guidance` skill.
 Extensions that used the origin trial may still have the old API surface. Remove it:
 
 ```js
-// ❌ OLD — deprecated
+// ❌ OLD - deprecated
 const session = await self.ai.languageModel.create();
 
 // ✅ CURRENT (Chrome 138+)
@@ -41,7 +41,7 @@ const session = await LanguageModel.create({
 ## Complete extension example: page summarizer
 
 A full wiring example showing manifest + service worker + side panel together.
-Note the use of `tabs` + `host_permissions` instead of `activeTab` — side panel button
+Note the use of `tabs` + `host_permissions` instead of `activeTab` - side panel button
 clicks do NOT activate `activeTab` (see Rule 12).
 
 ### manifest.json
@@ -85,7 +85,7 @@ document.getElementById('summarize').addEventListener('click', async () => {
     return;
   }
 
-  // Requires "tabs" + "host_permissions" — activeTab does NOT work from a side panel button
+  // Requires "tabs" + "host_permissions" - activeTab does NOT work from a side panel button
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const [{ result: pageText }] = await chrome.scripting.executeScript({
     target: { tabId: tab.id },
@@ -110,7 +110,7 @@ document.getElementById('summarize').addEventListener('click', async () => {
 
   summaryEl.textContent = '';
   for await (const chunk of session.promptStreaming(`Summarize:\n\n${pageText}`)) {
-    summaryEl.textContent += chunk; // APPEND — do not replace
+    summaryEl.textContent += chunk; // APPEND - do not replace
   }
   session.destroy();
 });

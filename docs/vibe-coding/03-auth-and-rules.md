@@ -45,13 +45,13 @@ emailGated/{docId}            ← Google users only
 | Listeners | Small queries only |
 | Writes | Batch thoughtfully (1 write/sec per document) |
 
-## Unit tests
+## Rules tests (real project, no emulators)
 
 ```bash
-cd backend && npm run test
+FIREBASE_API_KEY=<web api key> pnpm --filter backend run test:rules
 ```
 
-Tests live in `backend/rules/*.test.ts` using `@firebase/rules-unit-testing`.
+Tests live in `backend/rules/*.test.ts` and run against the **deployed** rules of the real project (emulators are too heavy locally - playbook bans them). They sign in anonymously, assert the allow/deny paths, and clean up after themselves. Skipped when `FIREBASE_API_KEY` is unset; deploy rules first with `npx firebase-tools deploy --only firestore:rules`.
 
 ## App Check
 

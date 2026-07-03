@@ -2,7 +2,7 @@
 
 Use cross-platform browser features to build sign-in forms that are secure, accessible and easy to use.
 
-If users ever need to sign in to your site, then good sign-in form design is critical. This is especially true for people on poor connections, on mobile, in a hurry, or under stress. Poorly designed sign-in forms get high bounce rates. Each bounce could mean a lost customer and a disgruntled user—not just a missed sign-in opportunity.
+If users ever need to sign in to your site, then good sign-in form design is critical. This is especially true for people on poor connections, on mobile, in a hurry, or under stress. Poorly designed sign-in forms get high bounce rates. Each bounce could mean a lost customer and a disgruntled user-not just a missed sign-in opportunity.
 
 ## How to implement
 
@@ -39,7 +39,7 @@ Give each form submit button a value that says what it does. Use a clear, recogn
 
 Allow your users to enter their name using a single input, unless you have a good reason for separately storing given names, family names, honorifics, or other name parts. Using a single name input makes forms less complex, enables cut-and-paste, and makes autofill simpler.
 
-Allow international names. For validation, avoid using regular expressions that only match Latin characters. Latin-only excludes users with names or addresses that include characters that aren't in the Latin alphabet. Allow Unicode letter matching instead—and ensure your backend supports Unicode securely as both input and output. Unicode in regular expressions is well supported by modern browsers.
+Allow international names. For validation, avoid using regular expressions that only match Latin characters. Latin-only excludes users with names or addresses that include characters that aren't in the Latin alphabet. Allow Unicode letter matching instead-and ensure your backend supports Unicode securely as both input and output. Unicode in regular expressions is well supported by modern browsers.
 
 ### Show sign-in progress
 
@@ -55,7 +55,7 @@ This enables browsers to help users by securely storing sign-in details and corr
 
 ### Validate carefully
 
-Validate data entry both in realtime and before form submission. Use `type="email"` for email inputs — the browser will validate the format automatically. Add the `required` attribute to mandatory fields to prevent empty submissions.
+Validate data entry both in realtime and before form submission. Use `type="email"` for email inputs - the browser will validate the format automatically. Add the `required` attribute to mandatory fields to prevent empty submissions.
 
 ### Put sign-in in its own `<form>` element
 
@@ -67,11 +67,11 @@ Don't wrap inputs in a `<div>` and handle input data submission purely with Java
 
 Some sites force users to enter emails or passwords twice. That might reduce errors for a few users, but causes extra work for all users, and increases abandonment rates. Asking twice also makes no sense where browsers autofill email addresses or suggest strong passwords. It's better to enable users to confirm their email address (you'll need to do that anyway) and make it easy for them to reset their password if necessary.
 
-### Keep passwords private—but enable users to see them if they want
+### Keep passwords private-but enable users to see them if they want
 
 Passwords inputs should have `type="password"` to hide password text and help the browser understand that the input is for passwords. (Note that browsers use a variety of techniques to understand input roles and decide whether or not to offer to save passwords.)
 
-You should add a **Show password** toggle to enable users to check the text they've entered—and don't forget to add a **Forgot password** link.
+You should add a **Show password** toggle to enable users to check the text they've entered-and don't forget to add a **Forgot password** link.
 
 ### Give mobile users the right keyboard
 
@@ -92,7 +92,7 @@ You can help browsers store data correctly and autofill inputs, so users don't h
 1.  The `autocomplete`, `name`, `id`, and `type` attributes help browsers understand the role of inputs in order to store data that can later be used for autofill. To allow data to be stored for autofill, modern browsers also require inputs to have a stable `name` or `id` value (not randomly generated on each page load or site deployment), and to be in a `<form>` element with a `submit` button.
 1.  The `autocomplete` attribute helps browsers correctly autofill inputs using stored data.
 
-For email inputs use `autocomplete="username"`, since `username` is recognized by password managers in modern browsers—even though you should use `type="email"` and you may want to use `id="email"` and `name="email"`. For password inputs, use the appropriate `autocomplete` and `id` values to help browsers differentiate between new and current passwords.
+For email inputs use `autocomplete="username"`, since `username` is recognized by password managers in modern browsers-even though you should use `type="email"` and you may want to use `id="email"` and `name="email"`. For password inputs, use the appropriate `autocomplete` and `id` values to help browsers differentiate between new and current passwords.
 
 ### Use autocomplete="current-password" and id="current-password" for an existing password
 

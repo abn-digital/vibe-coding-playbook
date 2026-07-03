@@ -14,26 +14,26 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 });
 ```
 
-### Request/response — IIFE + return true (most compatible)
+### Request/response - IIFE + return true (most compatible)
 
 ```js
 // sender
 const response = await chrome.runtime.sendMessage({ type: 'GET_DATA' });
 console.log(response.data);
 
-// receiver — IIFE keeps the channel open until sendResponse is called
+// receiver - IIFE keeps the channel open until sendResponse is called
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'GET_DATA') {
     (async () => {
       const data = await chrome.storage.local.get('key');
       sendResponse({ data });
     })();
-    return true; // REQUIRED — tells Chrome to keep the channel open
+    return true; // REQUIRED - tells Chrome to keep the channel open
   }
 });
 ```
 
-### Request/response — return a Promise (Chrome 99+)
+### Request/response - return a Promise (Chrome 99+)
 
 Returning a Promise directly from the listener is now supported and cleaner than the IIFE pattern:
 
@@ -102,7 +102,7 @@ chrome.runtime.onConnect.addListener((port) => {
 ### Missing `return true` causes response to never arrive
 
 ```js
-// ❌ BROKEN — async work completes but channel is already closed
+// ❌ BROKEN - async work completes but channel is already closed
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   fetchSomething().then(data => sendResponse(data)); // too late
   // missing: return true
@@ -120,10 +120,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 Content scripts are injected after the page loads. If the service worker sends a message immediately on `tabs.onUpdated`, the content script may not be listening yet. Use a handshake or retry:
 
 ```js
-// content script — announce it's ready
+// content script - announce it's ready
 chrome.runtime.sendMessage({ type: 'CONTENT_READY' });
 
-// service worker — wait for CONTENT_READY before sending
+// service worker - wait for CONTENT_READY before sending
 chrome.runtime.onMessage.addListener((msg, sender) => {
   if (msg.type === 'CONTENT_READY' && sender.tab) {
     chrome.tabs.sendMessage(sender.tab.id, { type: 'INIT_DATA', ... });

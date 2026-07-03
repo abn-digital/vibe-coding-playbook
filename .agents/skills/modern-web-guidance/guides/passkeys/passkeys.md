@@ -27,12 +27,12 @@ For backend FIDO2/WebAuthn options generation and signature verification, develo
 
 ## 4. Use Case Reference Matrix
 
-Identify the matching use case below and retrieve its full implementation guide. Every use case has critical APIs (`PublicKeyCredential.parseCreationOptionsFromJSON`, `parseRequestOptionsFromJSON`, `signalAllAcceptedCredentials`, `signalCurrentUserDetails`, `signalUnknownCredential`, conditional mediation, AAGUID handling, etc.) that are documented only in the per-use-case guide. Do NOT skip this retrieval step, and do NOT substitute third-party library wrappers (such as SimpleWebAuthn's `startAuthentication`/`startRegistration`) on the client — call the native WebAuthn browser APIs directly. Library recommendations in Section 3 apply to the **server-side** (backend FIDO2 verification) only.
+Identify the matching use case below and retrieve its full implementation guide. Every use case has critical APIs (`PublicKeyCredential.parseCreationOptionsFromJSON`, `parseRequestOptionsFromJSON`, `signalAllAcceptedCredentials`, `signalCurrentUserDetails`, `signalUnknownCredential`, conditional mediation, AAGUID handling, etc.) that are documented only in the per-use-case guide. Do NOT skip this retrieval step, and do NOT substitute third-party library wrappers (such as SimpleWebAuthn's `startAuthentication`/`startRegistration`) on the client - call the native WebAuthn browser APIs directly. Library recommendations in Section 3 apply to the **server-side** (backend FIDO2 verification) only.
 
 Specific passkey and WebAuthn implementation details are mapped to the following guides:
-*   **Passkey Registration**: `passkey-registration` (via `npx -y modern-web-guidance@latest retrieve "passkey-registration"`) — Offering new passkey registration and promotions.
-*   **Passkey Conditional Create**: `passkey-conditional-create` (via `npx -y modern-web-guidance@latest retrieve "passkey-conditional-create"`) — Silently registering passkeys immediately after successful password login.
-*   **Passkey Authentication**: `passkey-authentication` (via `npx -y modern-web-guidance@latest retrieve "passkey-authentication"`) — Discoverable-autofill and button sign-ins.
-*   **Passkey Management**: `passkey-management` (via `npx -y modern-web-guidance@latest retrieve "passkey-management"`) — Syncing lists, renames, and deletions with password managers.
-*   **Passkey Reauthentication**: `passkey-reauthentication` (via `npx -y modern-web-guidance@latest retrieve "passkey-reauthentication"`) — Re-verifying returning signed-in users for sensitive steps.
+*   **Passkey Registration**: `passkey-registration` (via `npx -y modern-web-guidance@latest retrieve "passkey-registration"`) - Offering new passkey registration and promotions.
+*   **Passkey Conditional Create**: `passkey-conditional-create` (via `npx -y modern-web-guidance@latest retrieve "passkey-conditional-create"`) - Silently registering passkeys immediately after successful password login.
+*   **Passkey Authentication**: `passkey-authentication` (via `npx -y modern-web-guidance@latest retrieve "passkey-authentication"`) - Discoverable-autofill and button sign-ins.
+*   **Passkey Management**: `passkey-management` (via `npx -y modern-web-guidance@latest retrieve "passkey-management"`) - Syncing lists, renames, and deletions with password managers.
+*   **Passkey Reauthentication**: `passkey-reauthentication` (via `npx -y modern-web-guidance@latest retrieve "passkey-reauthentication"`) - Re-verifying returning signed-in users for sensitive steps.
 

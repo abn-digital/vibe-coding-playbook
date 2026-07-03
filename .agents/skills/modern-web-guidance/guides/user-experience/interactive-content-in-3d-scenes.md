@@ -1,6 +1,6 @@
 # Enable interactive HTML content in 3D scenes
 
-The HTML-in-Canvas API allows rendering real DOM directly inside a canvas element. When applied to 3D rendering contexts like WebGL, WebGPU, or Three.js, adding the `layoutsubtree` attribute enables descendant HTML elements to be seamlessly projected into the 3D scene. Crucially, because the HTML elements remain part of the active DOM layout tree, they retain full interactivity—allowing users to click buttons, select text, and trigger focus states natively without requiring complex raycasting or custom event handling.
+The HTML-in-Canvas API allows rendering real DOM directly inside a canvas element. When applied to 3D rendering contexts like WebGL, WebGPU, or Three.js, adding the `layoutsubtree` attribute enables descendant HTML elements to be seamlessly projected into the 3D scene. Crucially, because the HTML elements remain part of the active DOM layout tree, they retain full interactivity-allowing users to click buttons, select text, and trigger focus states natively without requiring complex raycasting or custom event handling.
 
 ## How to implement
 

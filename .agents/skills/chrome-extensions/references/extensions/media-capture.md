@@ -7,7 +7,7 @@
 | Record the active tab's audio/video | `chrome.tabCapture.getMediaStreamId()` |
 | Let the user choose a screen, window, or tab | `chrome.desktopCapture.chooseDesktopMedia()` |
 
-Prefer `tabCapture` when you only need the current tab — it requires no user chooser dialog and
+Prefer `tabCapture` when you only need the current tab - it requires no user chooser dialog and
 no `"tabs"` permission. Use `desktopCapture` only when the user must select what to capture.
 
 ## Tab Capture
@@ -54,7 +54,7 @@ chrome.runtime.onMessage.addListener((msg) => {
 { "permissions": ["tabs", "desktopCapture"] }
 ```
 
-`"tabs"` is **required** — `chooseDesktopMedia` needs a `targetTab` with its `url` field
+`"tabs"` is **required** - `chooseDesktopMedia` needs a `targetTab` with its `url` field
 populated, which requires the `"tabs"` permission.
 
 ### Pattern
@@ -62,10 +62,10 @@ populated, which requires the `"tabs"` permission.
 ```js
 // service-worker.js
 chrome.action.onClicked.addListener(async (tab) => {
-  // ❌ BROKEN — no targetTab
+  // ❌ BROKEN - no targetTab
   // chrome.desktopCapture.chooseDesktopMedia(['screen', 'window'], cb);
 
-  // ✅ CORRECT — pass the active tab
+  // ✅ CORRECT - pass the active tab
   chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab'], tab, (streamId) => {
     if (!streamId) return; // User cancelled
     // Send streamId to offscreen document for getUserMedia
@@ -74,7 +74,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 });
 ```
 
-## State Locking — Prevent Double-Start Errors
+## State Locking - Prevent Double-Start Errors
 
 Both APIs fail if called while a previous capture is still active:
 - `tabCapture`: `"Cannot capture a tab with an active stream"`
@@ -118,10 +118,10 @@ is allowed at a time) and any other API that manages an exclusive resource.
 
 ## Saving Recordings
 
-Offscreen documents cannot call `chrome.downloads` — send the blob back to the service worker:
+Offscreen documents cannot call `chrome.downloads` - send the blob back to the service worker:
 
 ```js
-// offscreen.js — when recording stops
+// offscreen.js - when recording stops
 recorder.ondataavailable = (e) => chunks.push(e.data);
 recorder.onstop = async () => {
   const blob = new Blob(chunks, { type: 'video/webm' });

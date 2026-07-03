@@ -15,7 +15,7 @@ x-logging: &gcplogs
     labels: app,service,environment
 ```
 
-Local dev keeps `json-file` — never gcplogs locally.
+Local dev keeps `json-file` - never gcplogs locally.
 
 ## Ops Agent (GCE VM)
 

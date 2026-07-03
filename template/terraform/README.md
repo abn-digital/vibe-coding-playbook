@@ -24,4 +24,4 @@ terraform apply -var-file=terraform.tfvars
 
 ## Slack channels
 
-Default `create_slack_channel = false` — Terraform looks up an existing channel first.
+Default `create_slack_channel = false` - Terraform looks up an existing channel first.
